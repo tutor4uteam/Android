@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Tutor4u</string>
+    <string name="userName">User name</string>
+    <string name="userPass">Password</string>
+    <string name="log_btn">Login</string>
+    <string name="reg_btn">Register</string>
 </resources>
