@@ -2,6 +2,7 @@ package com.example.aljaz.tutor4u;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,8 +44,17 @@ public class LoginActivity extends AppCompatActivity {
 
         emailText = findViewById(R.id.input_email);
         passwordText = findViewById(R.id.input_password);
+        SharedPreferences sp1=this.getSharedPreferences("Login", MODE_PRIVATE);
+        String unm=sp1.getString("Username", null);
+        String pass = sp1.getString("Password", null);
+        emailText.setText(unm);
+        passwordText.setText(pass);
         loginButton = findViewById(R.id.btn_login);
         signupLink = findViewById(R.id.link_signup);
+        if (emailText.getText().length() > 0 && passwordText.getText().length() > 0){
+            login();
+        }
+
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -100,7 +110,13 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
                                         }
                                         else{
+                                            SharedPreferences sp = getSharedPreferences("Login", MODE_PRIVATE);
+                                            SharedPreferences.Editor Ed = sp.edit();
+                                            Ed.putString("Username", emailText.getText().toString());
+                                            Ed.putString("Password", passwordText.getText().toString());
+                                            Ed.commit();
                                             Toast.makeText(getBaseContext(), "Logged in as STUDENT", Toast.LENGTH_LONG).show();
+                                            loginSuccessfulStudent();
                                         }
                                     }
                                 });
@@ -108,18 +124,37 @@ public class LoginActivity extends AppCompatActivity {
                                 progressDialog.dismiss();
                             } else {
                                 System.out.println("IsValid succ after: " + result);
+                                SharedPreferences sp = getSharedPreferences("Login", MODE_PRIVATE);
+                                SharedPreferences.Editor Ed = sp.edit();
+                                Ed.putString("Username", emailText.getText().toString());
+                                Ed.putString("Password", passwordText.getText().toString());
+                                Ed.commit();
                                 Toast.makeText(getBaseContext(), "Logged in as TUTOR", Toast.LENGTH_LONG).show();
                                 loginButton.setEnabled(true);
                                 progressDialog.dismiss();
+                                loginSuccessfulTutor();
                             }
                         }
                     });
 
                 }
-            }, 3000);
+            }, 2000);
         }
 
     }
+
+    private void loginSuccessfulStudent() {
+        Intent intent = new Intent(getApplicationContext(), StudentSubjectViewActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    private void loginSuccessfulTutor() {
+        Intent intent = new Intent(getApplicationContext(), TutorMainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+
     // metoda za preverjanje formatov
     private boolean validData() {
         boolean valid = true;
