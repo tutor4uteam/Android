@@ -2,7 +2,6 @@ package com.example.aljaz.tutor4u;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,26 +18,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
-    boolean isStudent;
 
     EditText emailText;
     EditText passwordText;
@@ -98,18 +87,28 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     // preveri pravilnost podatkov preko API-ja
-                    validate(new VolleyCallback() {
+                    validateTutor(new VolleyCallback() {
                         @Override
                         public void onSuccess(boolean result) {
                             // preveri vrnjeni boolean
                             if (!result) {
-                                System.out.println("IsValid faild after: " + result);
-                                Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+                                // če ni tutor preveri ce je student
+                                validateStudent(new VolleyCallback() {
+                                    @Override
+                                    public void onSuccess(boolean result) {
+                                        if (!result){
+                                            Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+                                        }
+                                        else{
+                                            Toast.makeText(getBaseContext(), "Logged in as STUDENT", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
                                 loginButton.setEnabled(true);
                                 progressDialog.dismiss();
                             } else {
                                 System.out.println("IsValid succ after: " + result);
-                                Toast.makeText(getBaseContext(), "Login succesful", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getBaseContext(), "Logged in as TUTOR", Toast.LENGTH_LONG).show();
                                 loginButton.setEnabled(true);
                                 progressDialog.dismiss();
                             }
@@ -144,10 +143,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // metoda za preverjanje preko API-a
-    private void validate(final VolleyCallback callback) {
-        String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/LoginStudent/%s/%s", emailText.getText(), passwordText.getText());
-        //String url = "http://apitutor.azurewebsites.net/RestServiceImpl.svc/LoginStudent/"+emailText.getText()+"/"+passwordText.getText();
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+    private void validateTutor(final VolleyCallback callback) {
+        String getTutor = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/LoginTutor/%s/%s", emailText.getText(), passwordText.getText());
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getTutor, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
@@ -155,7 +153,33 @@ public class LoginActivity extends AppCompatActivity {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject jsonObject = response.getJSONObject(i);
                         String result = jsonObject.getString("result");
-                        System.out.println("Result: " + result.getClass());
+                        callback.onSuccess(result.equals("1") ? true : false);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error: " + error.toString());
+            }
+        });
+
+        requestQueue.add(request);
+
+    }
+
+    private void validateStudent(final VolleyCallback callback) {
+        String getStudent = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/LoginStudent/%s/%s", emailText.getText(), passwordText.getText());
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getStudent, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        String result = jsonObject.getString("result");
                         callback.onSuccess(result.equals("1") ? true : false);
                     }
                 } catch (JSONException e) {
