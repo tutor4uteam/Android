@@ -24,11 +24,14 @@
         <activity
             android:name=".SignupActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/AppTheme.Dark"/>
         <activity
             android:name=".StudentSubjectViewActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".TutorMainActivity"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark"/>
+        <activity android:name=".TutorMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark"/>
     </application>
 
 </manifest>
