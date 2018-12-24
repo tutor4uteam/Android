@@ -2,18 +2,41 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_tutor_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".TutorMainActivity">
+    android:id="@+id/drawer_tutor"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".StudentMainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_dark"
+            android:minHeight="?attr/actionBarSize"
+            app:title="Dashboard"
+            app:menu="@menu/menu"
+            android:id="@+id/tutorToolbar"></android.support.v7.widget.Toolbar>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/flcontent"></FrameLayout>
+    </LinearLayout>
+
+
 
     <android.support.design.widget.NavigationView
+        app:headerLayout="@layout/header"
+        android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        app:itemTextColor="@color/primary_dark"
-        app:itemIconTint="@color/primary_dark"
+        android:background="@color/primary_dark"
+        app:itemTextColor="@color/white"
+        app:itemBackground="@color/primary_darker"
+        app:itemIconTint="@color/white"
         app:menu="@menu/drawermenu"
         android:layout_gravity="start"
         >

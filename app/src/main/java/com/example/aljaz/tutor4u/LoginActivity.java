@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordText;
     Button loginButton;
     TextView signupLink;
-
+    UserInfo userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,18 +138,20 @@ public class LoginActivity extends AppCompatActivity {
                     });
 
                 }
-            }, 2000);
+            }, 500);
         }
 
     }
 
     private void loginSuccessfulStudent() {
-        Intent intent = new Intent(getApplicationContext(), StudentSubjectViewActivity.class);
+        Intent intent = new Intent(getApplicationContext(), StudentMainActivity.class);
+        intent.putExtra("UserInfo", userInfo);
         startActivity(intent);
         finish();
     }
     private void loginSuccessfulTutor() {
         Intent intent = new Intent(getApplicationContext(), TutorMainActivity.class);
+        intent.putExtra("UserInfo", userInfo);
         startActivity(intent);
         finish();
     }
@@ -188,6 +190,16 @@ public class LoginActivity extends AppCompatActivity {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject jsonObject = response.getJSONObject(i);
                         String result = jsonObject.getString("result");
+                        if (result.equals("1")){
+                            userInfo = new UserInfo(jsonObject.getString("id"),
+                                                    jsonObject.getString("name"),
+                                                    jsonObject.getString("lastname"),
+                                                    jsonObject.getString("street"),
+                                                    jsonObject.getString("houseNumber"),
+                                                    jsonObject.getString("postNumber"),
+                                                    jsonObject.getString("mail"),
+                                                    jsonObject.getString("phone"));
+                        }
                         callback.onSuccess(result.equals("1") ? true : false);
                     }
                 } catch (JSONException e) {
@@ -215,6 +227,16 @@ public class LoginActivity extends AppCompatActivity {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject jsonObject = response.getJSONObject(i);
                         String result = jsonObject.getString("result");
+                        if (result.equals("1")){
+                            userInfo = new UserInfo(jsonObject.getString("id"),
+                                    jsonObject.getString("name"),
+                                    jsonObject.getString("lastname"),
+                                    jsonObject.getString("street"),
+                                    jsonObject.getString("houseNumber"),
+                                    jsonObject.getString("postNumber"),
+                                    jsonObject.getString("mail"),
+                                    jsonObject.getString("phone"));
+                        }
                         callback.onSuccess(result.equals("1") ? true : false);
                     }
                 } catch (JSONException e) {

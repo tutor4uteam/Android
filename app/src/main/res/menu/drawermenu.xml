@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/db" android:title="Dashboard" android:icon="@drawable/ic_home_black_24dp" />
     <item android:id="@+id/settings" android:title="Settings" android:icon="@drawable/ic_settings_black_24dp"/>
     <item android:id="@+id/logout" android:title="Log out" android:icon="@drawable/ic_exit_to_app_black_24dp"/>
+    <item
+        android:id="@+id/action_search"
+        android:title="Search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView$SearchAutoComplete"
+        android:visible="false"
+        />
 </menu>

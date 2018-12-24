@@ -15,7 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
-public class StudentSubjectViewActivity extends AppCompatActivity {
+public class StudentMainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private android.support.v7.widget.Toolbar toolbar;
@@ -27,6 +27,9 @@ public class StudentSubjectViewActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.studentToolbar);
         setSupportActionBar(toolbar);
         NavigationView navigationView = findViewById(R.id.navigation_view);
+
+        UserInfo userInfo = (UserInfo) getIntent().getSerializableExtra("UserInfo");
+
         Fragment fragment = null;
         try {
              fragment = Dashboard.class.newInstance();
@@ -35,6 +38,8 @@ public class StudentSubjectViewActivity extends AppCompatActivity {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+
+
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flcontent, fragment).commit();
@@ -64,8 +69,8 @@ public class StudentSubjectViewActivity extends AppCompatActivity {
             case R.id.db:
                 fragmentClass = Dashboard.class;
                 break;
-            default:
-                fragmentClass = Dashboard.class;
+            case R.id.settings:
+                fragmentClass = Settings.class;
                 break;
         }
         if (intent != null){

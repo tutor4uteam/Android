@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -24,6 +25,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class SignupActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
@@ -75,6 +78,28 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        postCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                return;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println(s + " " + count);
+                if (s.length() == 4){
+                    getPost(s);
+                }else {
+                    postName.setText("");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                return;
+            }
+        });
+
         rePassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -119,6 +144,32 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void getPost(CharSequence s) {
+        String getPostName = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/Town/" + s);
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getPostName,null,  new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        String name = jsonObject.getString("name");
+                        postName.setText(name);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error: " + error.toString());
+            }
+        });
+
+        requestQueue.add(request);
 
     }
 
@@ -256,9 +307,11 @@ public class SignupActivity extends AppCompatActivity {
 
 
         String registerTutor = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addTutor/"+fName+"/" +
-                "" + sName+ "/"+sEmail+"/" + sMobile + "/"+sPassword+"/"+sPostCode+"/"+sAddress+"/"+sStreetNum+"/15");
-        String registerUser = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addUser/{NAME}/{SURNAME}/{MAIL}/{PHONE}/{PASSWORD}/{POSTNUMBER}/{STREET}/{HOUSENO}/{PRICE}");
+                "" + sName+ "/"+sEmail+"/" + sMobile + "/"+sPassword+"/"+sPostCode+"/"+sAddress+"/"+sStreetNum);
+        String registerUser = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addUser/"+fName+"/" +
+                "" + sName+ "/"+sEmail+"/" + sMobile + "/"+sPassword+"/"+sPostCode+"/"+sAddress+"/"+sStreetNum);
         String usedURL = aSwitch.isChecked() ? registerTutor : registerUser;
+        Log.d("Signed up as :" ,usedURL);
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, usedURL, null, new Response.Listener<JSONArray>() {
             @Override
@@ -276,6 +329,8 @@ public class SignupActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getBaseContext(),"There was a problem, please try later.", Toast.LENGTH_LONG).show();
+                createAccount.setEnabled(true);
                 System.out.println("Error: " + error.toString());
             }
         });
