@@ -8,8 +8,9 @@ public class Termin {
     String reserved;
     String grade;
     String date;
+    String price;
 
-    public Termin(String id_termin, String id_student, String id_tutor, String id_subject, String reserved, String grade, String date) {
+    public Termin(String id_termin, String id_student, String id_tutor, String id_subject, String reserved, String grade, String date, String price) {
         this.id_termin = id_termin;
         this.id_student = id_student;
         this.id_tutor = id_tutor;
@@ -17,6 +18,7 @@ public class Termin {
         this.reserved = reserved;
         this.grade = grade;
         this.date = date;
+        this.price = price;
     }
 
     public String getId_termin() {
@@ -73,5 +75,13 @@ public class Termin {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

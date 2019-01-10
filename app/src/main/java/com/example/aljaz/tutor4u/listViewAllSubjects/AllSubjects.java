@@ -126,9 +126,8 @@ public class AllSubjects extends Fragment {
                         JSONObject jsonObject = response.getJSONObject(i);
                         String id = jsonObject.getString("id");
                         String name = jsonObject.getString("name");
-                        //subjectName[i] = name;
-                        Subject subject = new Subject(id, name);
-                        ModelAllSubjects newModelAllSubjects = new ModelAllSubjects(name, "10");
+                        String tutorNum = jsonObject.getString("freeTermin");
+                        ModelAllSubjects newModelAllSubjects = new ModelAllSubjects(name, tutorNum);
                         modelAllSubjects.add(newModelAllSubjects);
                     }
 
