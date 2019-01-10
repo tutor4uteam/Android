@@ -1,13 +1,10 @@
-package com.example.aljaz.tutor4u;
+package com.example.aljaz.tutor4u.listViewAllSubjects;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +21,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.aljaz.tutor4u.Helpers.Subject;
+import com.example.aljaz.tutor4u.Helpers.Termin;
+import com.example.aljaz.tutor4u.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +36,9 @@ public class AllSubjects extends Fragment {
     private RequestQueue requestQueue;
     ListView listView;
     ListViewSubjectsAdapter adapter;
-    ArrayList<Model> arrayList = new ArrayList<>();
+    ArrayList<ModelAllSubjects> arrayList = new ArrayList<>();
+    ArrayList<Subject> subjectsArray = new ArrayList<>();
+    ArrayList<Termin> termsArray = new ArrayList<>();
     private ProgressBar spinner;
 
 
@@ -44,9 +46,6 @@ public class AllSubjects extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         requestQueue = Volley.newRequestQueue(getContext());
-
-
-
         super.onCreate(savedInstanceState);
 
     }
@@ -55,7 +54,7 @@ public class AllSubjects extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_subjects, container, false);
-
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("All subjects");
         spinner = view.findViewById(R.id.progressBar1);
         spinner.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
@@ -72,7 +71,7 @@ public class AllSubjects extends Fragment {
                 });
                 spinner.setVisibility(View.GONE);
             }
-        }, 1000);
+        }, 500);
 
         listView = view.findViewById(R.id.listViewSubjects);
         return view;
@@ -117,22 +116,23 @@ public class AllSubjects extends Fragment {
 
 
     private void getSubjects(final VolleyCallback callback){
-        String getTutor = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/Subject");
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getTutor,null,  new Response.Listener<JSONArray>() {
+        String getSubject = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/Subject");
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getSubject,null,  new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    ArrayList<Model> models = new ArrayList<>();
+                    ArrayList<ModelAllSubjects> modelAllSubjects = new ArrayList<>();
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject jsonObject = response.getJSONObject(i);
                         String id = jsonObject.getString("id");
                         String name = jsonObject.getString("name");
                         //subjectName[i] = name;
-                        Model newModel = new Model(name, "10");
-                        models.add(newModel);
+                        Subject subject = new Subject(id, name);
+                        ModelAllSubjects newModelAllSubjects = new ModelAllSubjects(name, "10");
+                        modelAllSubjects.add(newModelAllSubjects);
                     }
 
-                    callback.onSuccess(models);
+                    callback.onSuccess(modelAllSubjects);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

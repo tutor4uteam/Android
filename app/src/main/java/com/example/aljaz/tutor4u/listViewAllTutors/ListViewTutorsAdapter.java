@@ -1,24 +1,27 @@
-package com.example.aljaz.tutor4u;
+package com.example.aljaz.tutor4u.listViewAllTutors;
 
 import android.content.Context;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.aljaz.tutor4u.R;
+import com.example.aljaz.tutor4u.listViewAllSubjects.ModelAllSubjects;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ListViewSubjectsAdapter extends BaseAdapter {
+public class ListViewTutorsAdapter extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater;
-    List<Model> modelList;
-    ArrayList<Model> modelArrayList;
+    List<ModelAllTutors> modelList;
+    ArrayList<ModelAllTutors> modelArrayList;
 
-    public ListViewSubjectsAdapter(Context mContext, List<Model> modelList) {
+    public ListViewTutorsAdapter(Context mContext, List<ModelAllTutors> modelList) {
         context = mContext;
         this.modelList = modelList;
         layoutInflater = LayoutInflater.from(context);
@@ -27,7 +30,8 @@ public class ListViewSubjectsAdapter extends BaseAdapter {
     }
 
     public class ViewHolder{
-        TextView subjectName, tutorNum;
+        ImageView profile_picture;
+        TextView profile_name, profile_grade;
     }
 
     @Override
@@ -50,10 +54,11 @@ public class ListViewSubjectsAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = layoutInflater.inflate(R.layout.all_subjects_row, null);
+            convertView = layoutInflater.inflate(R.layout.all_tutors_row, null);
 
-            holder.subjectName = convertView.findViewById(R.id.subjectName);
-            holder.tutorNum  = convertView.findViewById(R.id.tutorsNum);
+            holder.profile_picture = convertView.findViewById(R.id.profile_image);
+            holder.profile_name = convertView.findViewById(R.id.profile_name);
+            holder.profile_grade  = convertView.findViewById(R.id.profile_grade);
 
             convertView.setTag(holder);
 
@@ -63,8 +68,8 @@ public class ListViewSubjectsAdapter extends BaseAdapter {
 
         }
 
-        holder.subjectName.setText(modelList.get(position).getSubjectName());
-        holder.tutorNum.setText(modelList.get(position).getTutorNum());
+        holder.profile_name.setText(modelList.get(position).getProfile_name());
+        holder.profile_grade.setText(modelList.get(position).getProfile_grade());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,8 +87,8 @@ public class ListViewSubjectsAdapter extends BaseAdapter {
         if (charText.length() == 0){
             modelList.addAll(modelArrayList);
         }else {
-            for (Model model:modelArrayList) {
-                if (model.getSubjectName().toLowerCase(Locale.getDefault()).contains(charText)){
+            for (ModelAllTutors model:modelArrayList) {
+                if (model.getProfile_name().toLowerCase(Locale.getDefault()).contains(charText)){
                     modelList.add(model);
                 }
             }

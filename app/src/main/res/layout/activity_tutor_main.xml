@@ -18,12 +18,13 @@
             android:background="@color/primary_dark"
             android:minHeight="?attr/actionBarSize"
             app:title="Dashboard"
-            app:menu="@menu/menu"
+            app:menu="@menu/drawermenu"
             android:id="@+id/tutorToolbar"></android.support.v7.widget.Toolbar>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/flcontent"></FrameLayout>
+        
     </LinearLayout>
 
 

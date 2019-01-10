@@ -20,6 +20,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.aljaz.tutor4u.Helpers.Student;
+import com.example.aljaz.tutor4u.Helpers.Tutor;
+import com.example.aljaz.tutor4u.Helpers.UserInfo;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView signupLink;
     UserInfo userInfo;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +49,11 @@ public class LoginActivity extends AppCompatActivity {
 
         emailText = findViewById(R.id.input_email);
         passwordText = findViewById(R.id.input_password);
-        SharedPreferences sp1=this.getSharedPreferences("Login", MODE_PRIVATE);
-        String unm=sp1.getString("Username", null);
+
+        SharedPreferences sp1 = this.getSharedPreferences("Login", MODE_PRIVATE);
+        String unm = sp1.getString("Username", null);
         String pass = sp1.getString("Password", null);
+
         emailText.setText(unm);
         passwordText.setText(pass);
         loginButton = findViewById(R.id.btn_login);
@@ -73,6 +80,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     private void login() {
@@ -145,15 +157,27 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginSuccessfulStudent() {
         Intent intent = new Intent(getApplicationContext(), StudentMainActivity.class);
-        intent.putExtra("UserInfo", userInfo);
+        SharedPreferences  mPrefs = getSharedPreferences("User_info", MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(userInfo);
+        prefsEditor.putString("Profile_info", json);
+        prefsEditor.commit();
+        //intent.putExtra("UserInfo", userInfo);
         startActivity(intent);
-        finish();
+        //finish();
     }
     private void loginSuccessfulTutor() {
         Intent intent = new Intent(getApplicationContext(), TutorMainActivity.class);
-        intent.putExtra("UserInfo", userInfo);
+        SharedPreferences  mPrefs = getSharedPreferences("User_info", MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(userInfo);
+        prefsEditor.putString("Profile_info", json);
+        prefsEditor.commit();
+        //intent.putExtra("UserInfo", userInfo);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
 
@@ -198,7 +222,8 @@ public class LoginActivity extends AppCompatActivity {
                                                     jsonObject.getString("houseNumber"),
                                                     jsonObject.getString("postNumber"),
                                                     jsonObject.getString("mail"),
-                                                    jsonObject.getString("phone"));
+                                                    jsonObject.getString("phone"),
+                                                    "tutor");
                         }
                         callback.onSuccess(result.equals("1") ? true : false);
                     }
@@ -235,7 +260,7 @@ public class LoginActivity extends AppCompatActivity {
                                     jsonObject.getString("houseNumber"),
                                     jsonObject.getString("postNumber"),
                                     jsonObject.getString("mail"),
-                                    jsonObject.getString("phone"));
+                                    jsonObject.getString("phone"), "student");
                         }
                         callback.onSuccess(result.equals("1") ? true : false);
                     }

@@ -67,13 +67,18 @@ public class SignupActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
 
+        mobileNumber.setEnabled(false);
+
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked){
                     aSwitch.setHint("Student");
+                    mobileNumber.setEnabled(false);
                 }else {
                     aSwitch.setHint("Tutor");
+                    mobileNumber.setEnabled(true);
+                    mobileNumber.requestFocus();
                 }
             }
         });
@@ -240,6 +245,7 @@ public class SignupActivity extends AppCompatActivity {
         String sEmail = email.getText().toString();
         String sMobile = mobileNumber.getText().toString();
         String sPassword = password.getText().toString();
+        Boolean isStudent = aSwitch.isChecked();
 
         if (fName.isEmpty() || fName.length() < 3) {
             firstName.setError("at least 3 characters");
@@ -277,7 +283,7 @@ public class SignupActivity extends AppCompatActivity {
             email.setError(null);
         }
 
-        if (sMobile.isEmpty() || sMobile.length()!=9) {
+        if (!isStudent && (sMobile.isEmpty() || sMobile.length()!=9)) {
             mobileNumber.setError("Enter Valid Mobile Number");
             valid = false;
         } else {
@@ -309,7 +315,7 @@ public class SignupActivity extends AppCompatActivity {
         String registerTutor = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addTutor/"+fName+"/" +
                 "" + sName+ "/"+sEmail+"/" + sMobile + "/"+sPassword+"/"+sPostCode+"/"+sAddress+"/"+sStreetNum);
         String registerUser = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addUser/"+fName+"/" +
-                "" + sName+ "/"+sEmail+"/" + sMobile + "/"+sPassword+"/"+sPostCode+"/"+sAddress+"/"+sStreetNum);
+                "" + sName+ "/"+sEmail + "/"+sPassword+"/"+sPostCode+"/"+sAddress+"/"+sStreetNum);
         String usedURL = aSwitch.isChecked() ? registerTutor : registerUser;
         Log.d("Signed up as :" ,usedURL);
 

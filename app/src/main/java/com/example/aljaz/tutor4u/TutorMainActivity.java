@@ -10,12 +10,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toolbar;
+
+import com.example.aljaz.tutor4u.Helpers.Tutor;
+import com.example.aljaz.tutor4u.Helpers.UserInfo;
+import com.google.gson.Gson;
 
 public class TutorMainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
@@ -29,14 +30,20 @@ public class TutorMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tutor_main);
         toolbar = findViewById(R.id.tutorToolbar);
         setSupportActionBar(toolbar);
-        NavigationView navigationView = findViewById(R.id.navigation_view);
+        final NavigationView navigationView = findViewById(R.id.navigation_view);
 
-        UserInfo userInfo = (UserInfo) getIntent().getSerializableExtra("UserInfo");
+        //final UserInfo userInfo = (UserInfo) getIntent().getSerializableExtra("UserInfo");
+        // Retrive user info
+        SharedPreferences mPrefs = getSharedPreferences("User_info", MODE_PRIVATE);
+        String json = mPrefs.getString("Profile_info", null);
+        Gson gson = new Gson();
+        final UserInfo tutor = gson.fromJson(json, UserInfo.class);
+
         View headerView = navigationView.getHeaderView(0);
         TextView userName = headerView.findViewById(R.id.first_last_name);
         TextView email = headerView.findViewById(R.id.mail);
-        userName.setText(userInfo.getFirsname()+" "+userInfo.getLastname());
-        email.setText(userInfo.getMail());
+        userName.setText(tutor.getFirsname()+" "+tutor.getLastname());
+        email.setText(tutor.getMail());
 
 
         Fragment fragment = null;
@@ -60,6 +67,31 @@ public class TutorMainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
+
+
+
+        headerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment userInfoFragment = null;
+                try {
+                     userInfoFragment = UserInfoScreen.class.newInstance();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("UserInfo", tutor);
+                userInfoFragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.flcontent, userInfoFragment).addToBackStack(null).commit();
+                drawerLayout.closeDrawers();
+            }
+        });
     }
 
 
@@ -73,6 +105,12 @@ public class TutorMainActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.commit();
+
+                SharedPreferences pre = getSharedPreferences("User_info",this.MODE_PRIVATE);
+                SharedPreferences.Editor pref = pre.edit();
+                pref.clear();
+                pref.commit();
+
                 intent = new Intent(getApplicationContext(), LoginActivity.class);
                 break;
             case R.id.db:
@@ -93,9 +131,9 @@ public class TutorMainActivity extends AppCompatActivity {
             }
 
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.flcontent, fragment).commit();
             menuItem.setChecked(true);
             setTitle(menuItem.getTitle());
+            fragmentManager.beginTransaction().replace(R.id.flcontent, fragment).addToBackStack(null).commit();
             drawerLayout.closeDrawers();
         }
     }
@@ -118,5 +156,6 @@ public class TutorMainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
 

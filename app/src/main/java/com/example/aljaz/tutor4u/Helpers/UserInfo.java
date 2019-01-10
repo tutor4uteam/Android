@@ -1,12 +1,20 @@
-package com.example.aljaz.tutor4u;
+package com.example.aljaz.tutor4u.Helpers;
 
 import java.io.Serializable;
 
 public class UserInfo implements Serializable {
 
-    String user_id, firsname, lastname, street, houseNum, postNum, mail, phoneNum;
+    String user_id;
+    String firsname;
+    String lastname;
+    String street;
+    String houseNum;
+    String postNum;
+    String mail;
+    String phoneNum;
+    String role;
 
-    public UserInfo(String user_id, String firsname, String lastname, String street, String houseNum, String postNum, String mail, String phoneNum) {
+    public UserInfo(String user_id, String firsname, String lastname, String street, String houseNum, String postNum, String mail, String phoneNum, String role) {
         this.user_id = user_id;
         this.firsname = firsname;
         this.lastname = lastname;
@@ -15,6 +23,15 @@ public class UserInfo implements Serializable {
         this.postNum = postNum;
         this.mail = mail;
         this.phoneNum = phoneNum;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getUser_id() {
