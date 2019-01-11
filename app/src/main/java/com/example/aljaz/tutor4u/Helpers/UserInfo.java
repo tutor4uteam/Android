@@ -10,20 +10,30 @@ public class UserInfo implements Serializable {
     String street;
     String houseNum;
     String postNum;
+    String postName;
     String mail;
     String phoneNum;
     String role;
 
-    public UserInfo(String user_id, String firsname, String lastname, String street, String houseNum, String postNum, String mail, String phoneNum, String role) {
+    public UserInfo(String user_id, String firsname, String lastname, String street, String houseNum, String postNum, String postName, String mail, String phoneNum, String role) {
         this.user_id = user_id;
         this.firsname = firsname;
         this.lastname = lastname;
         this.street = street;
         this.houseNum = houseNum;
         this.postNum = postNum;
+        this.postName = postName;
         this.mail = mail;
         this.phoneNum = phoneNum;
         this.role = role;
+    }
+
+    public String getPostName() {
+        return postName;
+    }
+
+    public void setPostName(String postName) {
+        this.postName = postName;
     }
 
     public String getRole() {

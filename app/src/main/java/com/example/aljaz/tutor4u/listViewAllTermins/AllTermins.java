@@ -18,15 +18,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.aljaz.tutor4u.Helpers.Termin;
 import com.example.aljaz.tutor4u.R;
-import com.example.aljaz.tutor4u.listViewAllSubjects.AllSubjects;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -87,9 +84,9 @@ public class AllTermins extends Fragment {
 
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject jsonObject = response.getJSONObject(i);
-                        SimpleDateFormat dt = new SimpleDateFormat("dd-mm-yyyy hh-mm");
+                        SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy hh-mm");
                         Date date = dt.parse(jsonObject.getString("date"));
-                        SimpleDateFormat dt1 = new SimpleDateFormat("dd-mm-yyyy hh:mm");
+                        SimpleDateFormat dt1 = new SimpleDateFormat("dd.MM.yyyy hh:mm");
                         String finalDate = dt1.format(date);
 
                         String grade = jsonObject.getString("grade");

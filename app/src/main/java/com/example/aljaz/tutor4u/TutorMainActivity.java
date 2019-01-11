@@ -58,7 +58,7 @@ public class TutorMainActivity extends AppCompatActivity {
             View headerView = navigationView.getHeaderView(0);
             TextView userName = headerView.findViewById(R.id.first_last_name);
             TextView email = headerView.findViewById(R.id.mail);
-            userName.setText(user.getFirsname() + " " + user.getLastname());
+            userName.setText(user.getFirsname() + " " + user.getLastname() + " (" + user.getRole() + ")");
             email.setText(user.getMail());
 
 
@@ -92,7 +92,8 @@ public class TutorMainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Fragment userInfoFragment = null;
                     try {
-                        userInfoFragment = UserInfoScreen.class.newInstance();
+                        if(user.getRole().equals("tutor"))userInfoFragment = UserInfoScreen.class.newInstance();
+                        else userInfoFragment = UserInfoStudent.class.newInstance();
                     } catch (InstantiationException e) {
                         e.printStackTrace();
                     } catch (IllegalAccessException e) {

@@ -1,5 +1,6 @@
 package com.example.aljaz.tutor4u;
 
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.aljaz.tutor4u.Helpers.Subject;
 import com.example.aljaz.tutor4u.Helpers.UserInfo;
 import com.google.gson.Gson;
@@ -24,13 +27,14 @@ public class AddTermin extends Fragment{
     ArrayList<Subject> subjectsArray = new ArrayList<>();
     Button btn_date_pick, btn_time_pick, btn_create_term;
     Spinner subjects;
+    private RequestQueue requestQueue;
     int day, month, year, hour, min;
     int dayFinal, monthFinal, yearFinal, hourFinal, minFinal;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        requestQueue = Volley.newRequestQueue(getContext());
         super.onCreate(savedInstanceState);
 
     }
@@ -45,6 +49,7 @@ public class AddTermin extends Fragment{
         btn_time_pick = view.findViewById(R.id.btn_time_pick);
         btn_create_term = view.findViewById(R.id.btn_create_term);
 
+        getSubjects();
 
         btn_date_pick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +73,26 @@ public class AddTermin extends Fragment{
         return inflater.inflate(R.layout.fragment_add_termin, container, false);
     }
 
+    private void getSubjects() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getSubjectsToArray(new VolleyCallback(){
+                    @Override
+                    public void onSuccess(ArrayList result) {
 
+                    }
+                });
+            }
+        }, 500);
+    }
 
+    private void getSubjectsToArray(VolleyCallback volleyCallback) {
 
+    }
 
+    public interface VolleyCallback{
+        void onSuccess(ArrayList result);
+    }
 }
 

@@ -52,8 +52,6 @@ public class LoginActivity extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         requestQueue = Volley.newRequestQueue(getContext());
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -219,6 +217,7 @@ public class LoginActivity extends Fragment {
                                                     jsonObject.getString("street"),
                                                     jsonObject.getString("houseNumber"),
                                                     jsonObject.getString("postNumber"),
+                                                    jsonObject.getString("postName"),
                                                     jsonObject.getString("mail"),
                                                     jsonObject.getString("phone"),
                                                     "tutor");
@@ -257,6 +256,7 @@ public class LoginActivity extends Fragment {
                                     jsonObject.getString("street"),
                                     jsonObject.getString("houseNumber"),
                                     jsonObject.getString("postNumber"),
+                                    jsonObject.getString("postName"),
                                     jsonObject.getString("mail"),
                                     jsonObject.getString("phone"), "student");
                         }

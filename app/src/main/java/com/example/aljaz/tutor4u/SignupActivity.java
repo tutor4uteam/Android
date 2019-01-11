@@ -1,5 +1,7 @@
 package com.example.aljaz.tutor4u;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -235,6 +237,11 @@ public class SignupActivity extends Fragment {
     public void onSignupSuccess() {
         Toast.makeText(getContext(), "Account successfully created", Toast.LENGTH_LONG).show();
         createAccount.setEnabled(true);
+        SharedPreferences sp = getContext().getSharedPreferences("Login", Context.MODE_PRIVATE);
+        SharedPreferences.Editor Ed = sp.edit();
+        Ed.putString("Username", email.getText().toString());
+        Ed.putString("Password", password.getText().toString());
+        Ed.commit();
         getFragmentManager().beginTransaction()
                 .replace(R.id.flcontent, new LoginActivity(), "Login")
                 .commit();
@@ -314,14 +321,14 @@ public class SignupActivity extends Fragment {
 
     private void registerTutor(final VolleyCallback callback) {
         // TODO Popravi telefonsko v add student
-        String fName = firstName.getText().toString().replaceAll(" ", "%");
-        String sName = surname.getText().toString().replaceAll(" ", "%");
-        String sAddress = address.getText().toString().replaceAll(" ", "%");
-        String sStreetNum = streetNum.getText().toString().replaceAll(" ", "%");
-        String sPostCode = postCode.getText().toString().replaceAll(" ", "%");
-        String sEmail = email.getText().toString().replaceAll(" ", "%");
-        String sMobile = mobileNumber.getText().toString().replaceAll(" ", "%");
-        String sPassword = password.getText().toString().replaceAll(" ", "%");
+        String fName = firstName.getText().toString().replaceAll(" ", "%20");
+        String sName = surname.getText().toString().replaceAll(" ", "%20");
+        String sAddress = address.getText().toString().replaceAll(" ", "%20");
+        String sStreetNum = streetNum.getText().toString().replaceAll(" ", "%20");
+        String sPostCode = postCode.getText().toString().replaceAll(" ", "%20");
+        String sEmail = email.getText().toString().replaceAll(" ", "%20");
+        String sMobile = mobileNumber.getText().toString().replaceAll(" ", "%20");
+        String sPassword = password.getText().toString().replaceAll(" ", "%20");
 
 
 //        String registerTutor = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addTutor/"+fName+"/" +
@@ -332,9 +339,9 @@ public class SignupActivity extends Fragment {
         //http://apitutor.azurewebsites.net/RestServiceImpl.svc/addStudent/
         // {NAME}/{SURNAME}/{MAIL}/{PASSWORD}/{POSTNUMBER}/{STREET}/{HOUSENO}
         String registerTutor = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addTutor/%s/%s/%s/%s/%s/%s/%s/%s",
-                fName, sName, sEmail, sPassword, sPostCode, sAddress, sStreetNum);
+                fName, sName, sEmail, sMobile, sPassword, sPostCode, sAddress, sStreetNum, sMobile);
         String registerUser = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addStudent/%s/%s/%s/%s/%s/%s/%s/%s",
-                fName, sName, sEmail, sMobile, sPassword, sPostCode, sAddress, sStreetNum);
+                fName, sName, sEmail, sPassword, sPostCode, sAddress, sStreetNum, sMobile);
         String usedURL = aSwitch.isChecked() ? registerTutor : registerUser;
         Log.d("Signed up as :" ,usedURL);
 

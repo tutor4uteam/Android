@@ -22,32 +22,42 @@
                 android:id="@+id/profile_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:padding="10dp"
                 android:src="@drawable/ic_person_black_24dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="10dp">
 
                 <TextView
                     android:id="@+id/termin_row_tutorName"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:maxWidth="@android:dimen/thumbnail_width"
+                    android:maxLines="1"
                     android:text="Jaka Čaka"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+
+
                 <TextView
                     android:id="@+id/termin_row_date"
+                    android:paddingTop="5dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="5dp"
-                    android:text="22.11.2019 15:00"
-                    android:textColor="@android:color/white" />
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:maxWidth="@android:dimen/thumbnail_width"
+                    android:maxLines="1"
+                    android:text="22.05.2019 13:15"
+                    android:textStyle="bold" />
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

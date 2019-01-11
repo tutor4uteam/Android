@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -71,6 +72,7 @@ public class AllSubjects extends Fragment {
                         adapter = new ListViewSubjectsAdapter(getContext(), arrayList);
                         listView.setAdapter(adapter);
                     }
+
                 });
                 spinner.setVisibility(View.GONE);
             }
@@ -139,7 +141,7 @@ public class AllSubjects extends Fragment {
 
 
     private void getSubjects(final VolleyCallback callback){
-        String getSubject = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/Subject");
+        final String getSubject = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/Subject");
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getSubject,null,  new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -149,8 +151,8 @@ public class AllSubjects extends Fragment {
                         JSONObject jsonObject = response.getJSONObject(i);
                         String id = jsonObject.getString("id");
                         String name = jsonObject.getString("name");
-                        String tutorNum = jsonObject.getString("freeTermin");
-                        ModelAllSubjects newModelAllSubjects = new ModelAllSubjects(id, name, tutorNum);
+                        String freeTerms = jsonObject.getString("freeTermin").equals("1") ? jsonObject.getString("freeTermin") + " free term" : jsonObject.getString("freeTermin") + " free terms";
+                        ModelAllSubjects newModelAllSubjects = new ModelAllSubjects(id, name, freeTerms);
                         modelAllSubjects.add(newModelAllSubjects);
                     }
 
@@ -162,7 +164,8 @@ public class AllSubjects extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Error: " + error.toString());
+                Toast.makeText(getContext(), "Sorry there was a problem. Please try later", Toast.LENGTH_LONG);
+                //System.out.println("Error: " + error.toString());
             }
         });
 

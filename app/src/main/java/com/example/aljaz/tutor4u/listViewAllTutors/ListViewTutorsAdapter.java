@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.aljaz.tutor4u.R;
-import com.example.aljaz.tutor4u.listViewAllSubjects.ModelAllSubjects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class ListViewTutorsAdapter extends BaseAdapter {
 
     public class ViewHolder{
         ImageView profile_picture;
-        TextView profile_name, profile_grade;
+        TextView profile_name, post, profile_grade;
     }
 
     @Override
@@ -59,7 +58,7 @@ public class ListViewTutorsAdapter extends BaseAdapter {
             holder.profile_picture = convertView.findViewById(R.id.profile_image);
             holder.profile_name = convertView.findViewById(R.id.profile_name);
             holder.profile_grade  = convertView.findViewById(R.id.profile_grade);
-
+            holder.post = convertView.findViewById(R.id.post);
             convertView.setTag(holder);
 
         }
@@ -70,7 +69,7 @@ public class ListViewTutorsAdapter extends BaseAdapter {
 
         holder.profile_name.setText(modelList.get(position).getProfile_name() + " " + modelList.get(position).getProfile_surname());
         holder.profile_grade.setText(modelList.get(position).getProfile_grade());
-
+        holder.post.setText(modelList.get(position).getProfile_address().split(",")[1]);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
