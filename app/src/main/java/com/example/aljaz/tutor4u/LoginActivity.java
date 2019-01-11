@@ -1,18 +1,23 @@
 package com.example.aljaz.tutor4u;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.app.Fragment;
+
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,8 +25,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.aljaz.tutor4u.Helpers.Student;
-import com.example.aljaz.tutor4u.Helpers.Tutor;
 import com.example.aljaz.tutor4u.Helpers.UserInfo;
 import com.google.gson.Gson;
 
@@ -30,7 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Fragment {
     private RequestQueue requestQueue;
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
@@ -42,28 +45,36 @@ public class LoginActivity extends AppCompatActivity {
     UserInfo userInfo;
 
 
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        requestQueue = Volley.newRequestQueue(getContext());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log);
 
-        emailText = findViewById(R.id.input_email);
-        passwordText = findViewById(R.id.input_password);
 
-        SharedPreferences sp1 = this.getSharedPreferences("Login", MODE_PRIVATE);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_log, container, false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Login");
+
+        emailText = view.findViewById(R.id.input_email);
+        passwordText = view.findViewById(R.id.input_password);
+
+        SharedPreferences sp1 = getContext().getSharedPreferences("Login", Context.MODE_PRIVATE);
         String unm = sp1.getString("Username", null);
         String pass = sp1.getString("Password", null);
 
         emailText.setText(unm);
         passwordText.setText(pass);
-        loginButton = findViewById(R.id.btn_login);
-        signupLink = findViewById(R.id.link_signup);
+        loginButton = view.findViewById(R.id.btn_login);
+        signupLink = view.findViewById(R.id.link_signup);
         if (emailText.getText().length() > 0 && passwordText.getText().length() > 0){
             login();
         }
-
-
-        requestQueue = Volley.newRequestQueue(this);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,17 +86,15 @@ public class LoginActivity extends AppCompatActivity {
         signupLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.flcontent, new SignupActivity(), "SignUp")
+                        .addToBackStack(null)
+                        .commit();
             }
         });
-
+        return view;
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 
     private void login() {
         Log.d(TAG, "Login");
@@ -98,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
             // format je pravi
             loginButton.setEnabled(false);
 
-            final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
+            final ProgressDialog progressDialog = new ProgressDialog(getContext(), R.style.AppTheme_Dark_Dialog);
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage("Authenticating ...");
             progressDialog.show();
@@ -119,16 +128,16 @@ public class LoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(boolean result) {
                                         if (!result){
-                                            Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getContext(), "Login failed", Toast.LENGTH_LONG).show();
                                         }
                                         else{
-                                            SharedPreferences sp = getSharedPreferences("Login", MODE_PRIVATE);
+                                            SharedPreferences sp = getContext().getSharedPreferences("Login", Context.MODE_PRIVATE);
                                             SharedPreferences.Editor Ed = sp.edit();
                                             Ed.putString("Username", emailText.getText().toString());
                                             Ed.putString("Password", passwordText.getText().toString());
                                             Ed.commit();
-                                            Toast.makeText(getBaseContext(), "Logged in as STUDENT", Toast.LENGTH_LONG).show();
-                                            loginSuccessfulStudent();
+                                            Toast.makeText(getContext(), "Logged in as STUDENT", Toast.LENGTH_LONG).show();
+                                            loginSuccessful();
                                         }
                                     }
                                 });
@@ -136,15 +145,15 @@ public class LoginActivity extends AppCompatActivity {
                                 progressDialog.dismiss();
                             } else {
                                 System.out.println("IsValid succ after: " + result);
-                                SharedPreferences sp = getSharedPreferences("Login", MODE_PRIVATE);
+                                SharedPreferences sp = getContext().getSharedPreferences("Login", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor Ed = sp.edit();
                                 Ed.putString("Username", emailText.getText().toString());
                                 Ed.putString("Password", passwordText.getText().toString());
                                 Ed.commit();
-                                Toast.makeText(getBaseContext(), "Logged in as TUTOR", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "Logged in as TUTOR", Toast.LENGTH_LONG).show();
                                 loginButton.setEnabled(true);
                                 progressDialog.dismiss();
-                                loginSuccessfulTutor();
+                                loginSuccessful();
                             }
                         }
                     });
@@ -155,21 +164,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void loginSuccessfulStudent() {
-        Intent intent = new Intent(getApplicationContext(), StudentMainActivity.class);
-        SharedPreferences  mPrefs = getSharedPreferences("User_info", MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(userInfo);
-        prefsEditor.putString("Profile_info", json);
-        prefsEditor.commit();
-        //intent.putExtra("UserInfo", userInfo);
-        startActivity(intent);
-        //finish();
-    }
-    private void loginSuccessfulTutor() {
-        Intent intent = new Intent(getApplicationContext(), TutorMainActivity.class);
-        SharedPreferences  mPrefs = getSharedPreferences("User_info", MODE_PRIVATE);
+
+    private void loginSuccessful() {
+        Intent intent = new Intent(getContext(), TutorMainActivity.class);
+        SharedPreferences  mPrefs = getContext().getSharedPreferences("User_info", Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(userInfo);
@@ -188,14 +186,14 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toast.makeText(this, "Enter a valid email address", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Enter a valid email address", Toast.LENGTH_LONG).show();
             return false;
         }else {
             emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4){
-            Toast.makeText(this, "Password must be longer than 4 chars", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Password must be longer than 4 chars", Toast.LENGTH_LONG).show();
             return false;
         }else {
             passwordText.setError(null);

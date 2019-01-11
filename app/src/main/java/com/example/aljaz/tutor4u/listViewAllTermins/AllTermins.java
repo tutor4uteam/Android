@@ -97,7 +97,7 @@ public class AllTermins extends Fragment {
                         String id_tutor = jsonObject.getString("idTutor");
                         String price = jsonObject.getString("price");
                         String tutorName = jsonObject.getString("tutorName") + " " + jsonObject.getString("tutorLastname");
-                        ModelAllTermins newModelAllTermins = new ModelAllTermins(tutorName, finalDate, price, id_termin);
+                        ModelAllTermins newModelAllTermins = new ModelAllTermins(tutorName, finalDate, price+" €", id_termin);
                         modelAllTermins.add(newModelAllTermins);
 
                     }

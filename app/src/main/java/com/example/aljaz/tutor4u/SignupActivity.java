@@ -1,5 +1,8 @@
 package com.example.aljaz.tutor4u;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +10,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -28,7 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends Fragment {
     private RequestQueue requestQueue;
 
     EditText firstName;
@@ -47,38 +52,44 @@ public class SignupActivity extends AppCompatActivity {
     TextView login;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        requestQueue = Volley.newRequestQueue(getContext());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-        firstName = findViewById(R.id.input_first_name);
-        surname = findViewById(R.id.input_surname);
-        address = findViewById(R.id.input_address);
-        streetNum = findViewById(R.id.input_addressNum);
-        postCode = findViewById(R.id.input_postcode);
-        postName = findViewById(R.id.input_post);
-        email = findViewById(R.id.input_email);
-        mobileNumber = findViewById(R.id.input_mobile);
-        password = findViewById(R.id.input_password);
-        rePassword = findViewById(R.id.input_reEnterPassword);
-        rePasswordError = findViewById(R.id.rePasswordError);
-        aSwitch = findViewById(R.id.switch1);
-        createAccount = findViewById(R.id.btn_signup);
-        login = findViewById(R.id.link_login);
+        
+    }
 
-        requestQueue = Volley.newRequestQueue(this);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_signup, container, false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Sign up");
 
-        mobileNumber.setEnabled(false);
+        firstName = view.findViewById(R.id.input_first_name);
+        surname = view.findViewById(R.id.input_surname);
+        address = view.findViewById(R.id.input_address);
+        streetNum = view.findViewById(R.id.input_addressNum);
+        postCode = view.findViewById(R.id.input_postcode);
+        postName = view.findViewById(R.id.input_post);
+        email = view.findViewById(R.id.input_email);
+        mobileNumber = view.findViewById(R.id.input_mobile);
+        password = view.findViewById(R.id.input_password);
+        rePassword = view.findViewById(R.id.input_reEnterPassword);
+        rePasswordError = view.findViewById(R.id.rePasswordError);
+        aSwitch = view.findViewById(R.id.switch1);
+        createAccount = view.findViewById(R.id.btn_signup);
+        login = view.findViewById(R.id.link_login);
+
+        //mobileNumber.setEnabled(false);
 
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked){
                     aSwitch.setHint("Student");
-                    mobileNumber.setEnabled(false);
+                    //mobileNumber.setEnabled(false);
                 }else {
                     aSwitch.setHint("Tutor");
-                    mobileNumber.setEnabled(true);
-                    mobileNumber.requestFocus();
+                    //mobileNumber.setEnabled(true);
+                    //mobileNumber.requestFocus();
                 }
             }
         });
@@ -142,14 +153,17 @@ public class SignupActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(intent);
-                finish();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.flcontent, new LoginActivity(), "Login")
+                        .addToBackStack(null)
+                        .commit();
                 //overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
 
 
+
+        return view;
     }
 
     private void getPost(CharSequence s) {
@@ -188,7 +202,7 @@ public class SignupActivity extends AppCompatActivity {
 
         createAccount.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
+        final ProgressDialog progressDialog = new ProgressDialog(getContext(),
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
@@ -219,21 +233,19 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupSuccess() {
-        Toast.makeText(getBaseContext(), "Account successfully created", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Account successfully created", Toast.LENGTH_LONG).show();
         createAccount.setEnabled(true);
-        setResult(RESULT_OK, null);
-        finish();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.flcontent, new LoginActivity(), "Login")
+                .commit();
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Can't create account", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Can't create account", Toast.LENGTH_LONG).show();
         createAccount.setEnabled(true);
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
+
     // Preveri pravilnost vpisanih podatkov
     public boolean validate() {
         boolean valid = true;
@@ -301,21 +313,28 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void registerTutor(final VolleyCallback callback) {
-        //TODO: Popravi postnumber in price v stringu
-        String fName = firstName.getText().toString();
-        String sName = surname.getText().toString();
-        String sAddress = address.getText().toString();
-        String sStreetNum = streetNum.getText().toString();
-        String sPostCode = postCode.getText().toString();
-        String sEmail = email.getText().toString();
-        String sMobile = mobileNumber.getText().toString();
-        String sPassword = password.getText().toString();
+        // TODO Popravi telefonsko v add student
+        String fName = firstName.getText().toString().replaceAll(" ", "%");
+        String sName = surname.getText().toString().replaceAll(" ", "%");
+        String sAddress = address.getText().toString().replaceAll(" ", "%");
+        String sStreetNum = streetNum.getText().toString().replaceAll(" ", "%");
+        String sPostCode = postCode.getText().toString().replaceAll(" ", "%");
+        String sEmail = email.getText().toString().replaceAll(" ", "%");
+        String sMobile = mobileNumber.getText().toString().replaceAll(" ", "%");
+        String sPassword = password.getText().toString().replaceAll(" ", "%");
 
 
-        String registerTutor = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addTutor/"+fName+"/" +
-                "" + sName+ "/"+sEmail+"/" + sMobile + "/"+sPassword+"/"+sPostCode+"/"+sAddress+"/"+sStreetNum);
-        String registerUser = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addUser/"+fName+"/" +
-                "" + sName+ "/"+sEmail + "/"+sPassword+"/"+sPostCode+"/"+sAddress+"/"+sStreetNum);
+//        String registerTutor = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addTutor/"+fName+"/" +
+//                "" + sName+ "/"+sEmail+"/" + sMobile + "/"+sPassword+"/"+sPostCode+"/"+sAddress+"/"+sStreetNum);
+//        String registerUser = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addUser/"+fName+"/" +
+//                "" + sName+ "/"+sEmail + "/"+sPassword+"/"+sPostCode+"/"+sAddress+"/"+sStreetNum);
+
+        //http://apitutor.azurewebsites.net/RestServiceImpl.svc/addStudent/
+        // {NAME}/{SURNAME}/{MAIL}/{PASSWORD}/{POSTNUMBER}/{STREET}/{HOUSENO}
+        String registerTutor = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addTutor/%s/%s/%s/%s/%s/%s/%s/%s",
+                fName, sName, sEmail, sPassword, sPostCode, sAddress, sStreetNum);
+        String registerUser = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addStudent/%s/%s/%s/%s/%s/%s/%s/%s",
+                fName, sName, sEmail, sMobile, sPassword, sPostCode, sAddress, sStreetNum);
         String usedURL = aSwitch.isChecked() ? registerTutor : registerUser;
         Log.d("Signed up as :" ,usedURL);
 
@@ -335,7 +354,7 @@ public class SignupActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(),"There was a problem, please try later.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"There was a problem, please try later.", Toast.LENGTH_LONG).show();
                 createAccount.setEnabled(true);
                 System.out.println("Error: " + error.toString());
             }
