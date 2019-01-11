@@ -81,8 +81,8 @@ public class AllTutors extends Fragment {
                         String address = jsonObject.getString("address");
                         String mail = jsonObject.getString("mail");
                         String phone = jsonObject.getString("phone");
-                        // TODO popravi grade. Povprečna ocena
-                        ModelAllTutors newModelAllTutors = new ModelAllTutors("", name, surname, address, mail, phone, "");
+                        String grade = jsonObject.getString("grade");
+                        ModelAllTutors newModelAllTutors = new ModelAllTutors("", name, surname, address, mail, phone, grade);
                         modelAllTutors.add(newModelAllTutors);
                     }
 

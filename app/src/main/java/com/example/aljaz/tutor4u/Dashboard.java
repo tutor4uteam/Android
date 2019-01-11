@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import com.example.aljaz.tutor4u.Helpers.Tutor;
 import com.example.aljaz.tutor4u.Helpers.UserInfo;
 import com.example.aljaz.tutor4u.listViewAllSubjects.AllSubjects;
 import com.example.aljaz.tutor4u.listViewAllTutors.AllTutors;
@@ -50,6 +50,10 @@ public class Dashboard extends Fragment {
 
         if (userInfo.getRole().equals("tutor")) addTermLayout.setVisibility(View.VISIBLE);
 
+        for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); i++) {
+            getFragmentManager().popBackStack();
+        }
+
         allSubjectsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +82,16 @@ public class Dashboard extends Fragment {
                         .commit();
             }
         });
+
+        filterCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "To be implemented",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
         return view;
     }
+
 
 }

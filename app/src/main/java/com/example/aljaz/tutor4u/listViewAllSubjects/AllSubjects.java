@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -21,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.aljaz.tutor4u.listViewAllTermins.AllTermins;
 import com.example.aljaz.tutor4u.Helpers.Subject;
 import com.example.aljaz.tutor4u.Helpers.Termin;
 import com.example.aljaz.tutor4u.R;
@@ -36,7 +38,7 @@ public class AllSubjects extends Fragment {
     private RequestQueue requestQueue;
     ListView listView;
     ListViewSubjectsAdapter adapter;
-    ArrayList<ModelAllSubjects> arrayList = new ArrayList<>();
+    ArrayList<ModelAllSubjects> arrayList;
     ArrayList<Subject> subjectsArray = new ArrayList<>();
     ArrayList<Termin> termsArray = new ArrayList<>();
     private ProgressBar spinner;
@@ -57,6 +59,7 @@ public class AllSubjects extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("All subjects");
         spinner = view.findViewById(R.id.progressBar1);
         spinner.setVisibility(View.VISIBLE);
+        arrayList = new ArrayList<>();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -74,8 +77,28 @@ public class AllSubjects extends Fragment {
         }, 500);
 
         listView = view.findViewById(R.id.listViewSubjects);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /*Toast.makeText(getContext(), "This is my Toast message! "+arrayList.get(position).subjectName,
+                        Toast.LENGTH_LONG).show();*/
+                AllTermins allTermins = new AllTermins();
+                Bundle bundle = new Bundle();
+                bundle.putString("id_subject", arrayList.get(position).id_subject);
+
+                allTermins.setArguments(bundle);
+
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.flcontent, allTermins)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         return view;
     }
+
 
 
     @Override
@@ -127,7 +150,7 @@ public class AllSubjects extends Fragment {
                         String id = jsonObject.getString("id");
                         String name = jsonObject.getString("name");
                         String tutorNum = jsonObject.getString("freeTermin");
-                        ModelAllSubjects newModelAllSubjects = new ModelAllSubjects(name, tutorNum);
+                        ModelAllSubjects newModelAllSubjects = new ModelAllSubjects(id, name, tutorNum);
                         modelAllSubjects.add(newModelAllSubjects);
                     }
 

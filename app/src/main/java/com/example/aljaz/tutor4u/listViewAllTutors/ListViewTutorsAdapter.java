@@ -68,13 +68,13 @@ public class ListViewTutorsAdapter extends BaseAdapter {
 
         }
 
-        holder.profile_name.setText(modelList.get(position).getProfile_name());
+        holder.profile_name.setText(modelList.get(position).getProfile_name() + " " + modelList.get(position).getProfile_surname());
         holder.profile_grade.setText(modelList.get(position).getProfile_grade());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO klik na subject
+                // TODO klik na tutorja
             }
         });
 

@@ -47,7 +47,7 @@ public class ListViewSubjectsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -67,12 +67,14 @@ public class ListViewSubjectsAdapter extends BaseAdapter {
         holder.subjectName.setText(modelAllSubjectsList.get(position).getSubjectName());
         holder.tutorNum.setText(modelAllSubjectsList.get(position).getTutorNum());
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+        /*convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO klik na subject
+                Toast.makeText(v.getContext(), "This is my Toast message! "+modelAllSubjectsList.get(position).subjectName,
+                        Toast.LENGTH_LONG).show();
+
             }
-        });
+        });*/
 
         return convertView;
     }

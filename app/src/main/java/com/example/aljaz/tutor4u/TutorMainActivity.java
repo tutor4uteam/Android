@@ -88,11 +88,15 @@ public class TutorMainActivity extends AppCompatActivity {
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
 
-                fragmentManager.beginTransaction().replace(R.id.flcontent, userInfoFragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.flcontent, userInfoFragment, "Dashboard")
+                        .addToBackStack(null)
+                        .commit();
                 drawerLayout.closeDrawers();
             }
         });
     }
+
 
 
     public void selectIterDrawer(MenuItem menuItem){
@@ -156,6 +160,7 @@ public class TutorMainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }
 
