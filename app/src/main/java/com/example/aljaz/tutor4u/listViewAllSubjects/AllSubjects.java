@@ -28,6 +28,7 @@ import com.example.aljaz.tutor4u.listViewAllTermins.AllTermins;
 import com.example.aljaz.tutor4u.Helpers.Subject;
 import com.example.aljaz.tutor4u.Helpers.Termin;
 import com.example.aljaz.tutor4u.R;
+import com.google.android.gms.tasks.TaskCompletionSource;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,7 +71,11 @@ public class AllSubjects extends Fragment {
                     public void onSuccess(ArrayList result) {
                         arrayList.addAll(result);
                         System.out.println("Array size from onCreate: " + arrayList.size());
-                        adapter = new ListViewSubjectsAdapter(getContext(), arrayList);
+                        try {
+                            adapter = new ListViewSubjectsAdapter(getContext(), arrayList);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         listView.setAdapter(adapter);
                     }
 

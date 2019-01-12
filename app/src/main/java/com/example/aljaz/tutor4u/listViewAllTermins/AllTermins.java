@@ -5,9 +5,11 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -29,10 +31,13 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 
-public class AllTermins extends Fragment{
+public class AllTermins extends Fragment {
     private RequestQueue requestQueue;
     ListView listView;
     ListViewTerminsAdapter adapter;
@@ -61,17 +66,33 @@ public class AllTermins extends Fragment{
                 getTermins(new VolleyCallback() {
                     @Override
                     public void onSuccess(ArrayList result) {
-                        if (result.size() == 0) Toast.makeText(getContext(), "Error, please try again later", Toast.LENGTH_LONG);
+                        if (result.size() == 0)
+                            Toast.makeText(getContext(), "Error, please try again later", Toast.LENGTH_LONG);
                         arrayList.addAll(result);
-                        adapter = new ListViewTerminsAdapter(getContext(), arrayList);
+                        arrayList.sort(new Comparator<ModelAllTermins>() {
+                            @Override
+                            public int compare(ModelAllTermins o1, ModelAllTermins o2) {
+                                return o1.date.compareTo(o2.date);
+                            }
+                        });
+                        Collections.reverse(arrayList);
+                        try {
+                            adapter = new ListViewTerminsAdapter(getContext(), arrayList);
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         listView.setAdapter(adapter);
                     }
                 }, idSubject);
                 spinner.setVisibility(View.GONE);
             }
-        }, 500);
+        }, 1000);
 
         listView = view.findViewById(R.id.listViewTermins);
+
+
+
 
         return view;
     }
@@ -97,7 +118,7 @@ public class AllTermins extends Fragment{
                         String id_tutor = jsonObject.getString("idTutor");
                         String price = jsonObject.getString("price");
                         String tutorName = jsonObject.getString("tutorName") + " " + jsonObject.getString("tutorLastname");
-                        ModelAllTermins newModelAllTermins = new ModelAllTermins(tutorName, finalDate, price+" €", id_termin);
+                        ModelAllTermins newModelAllTermins = new ModelAllTermins(tutorName, dateOfTerm, price + " €", id_termin);
                         if (!new Date().after(dateOfTerm)) {
                             modelAllTermins.add(newModelAllTermins);
                         }
@@ -117,7 +138,6 @@ public class AllTermins extends Fragment{
         });
         requestQueue.add(request);
     }
-
 
 
     public interface VolleyCallback {

@@ -1,6 +1,9 @@
 package com.example.aljaz.tutor4u.listViewAllTutors;
 
-public class ModelAllTutors {
+import java.io.Serializable;
+
+public class ModelAllTutors implements Serializable {
+    String tutorId;
     String profile_img;
     String profile_name;
     String profile_surname;
@@ -9,7 +12,8 @@ public class ModelAllTutors {
     String profile_phone;
     String profile_grade;
 
-    public ModelAllTutors(String profile_img, String profile_name, String profile_surname, String profile_address, String profile_mail, String profile_phone, String profile_grade) {
+    public ModelAllTutors(String tutorId, String profile_img, String profile_name, String profile_surname, String profile_address, String profile_mail, String profile_phone, String profile_grade) {
+        this.tutorId = tutorId;
         this.profile_img = profile_img;
         this.profile_name = profile_name;
         this.profile_surname = profile_surname;
@@ -45,5 +49,9 @@ public class ModelAllTutors {
 
     public String getProfile_grade() {
         return profile_grade;
+    }
+
+    public String getTutorId() {
+        return tutorId;
     }
 }

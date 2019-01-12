@@ -1,6 +1,5 @@
 package com.example.aljaz.tutor4u;
 
-import android.os.Handler;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,11 +17,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.aljaz.tutor4u.Helpers.Subject;
 import com.example.aljaz.tutor4u.Helpers.UserInfo;
@@ -33,11 +28,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
 
-public class AddTermin extends Fragment  implements AddSubjectDialog.AddSubjectDialogListener {
+
+public class AddTermin extends Fragment implements AddSubjectDialog.AddSubjectDialogListener {
 
     ArrayList<ModelSubjectSpinner> subjectsArray;
     ArrayAdapter<ModelSubjectSpinner> adapter;
@@ -48,8 +48,6 @@ public class AddTermin extends Fragment  implements AddSubjectDialog.AddSubjectD
     TimePicker timePicker;
     Spinner subjects;
     String idTutor = null;
-
-
 
 
     @Override
@@ -83,22 +81,7 @@ public class AddTermin extends Fragment  implements AddSubjectDialog.AddSubjectD
 
         idTutor = userInfo.getUser_id();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getSubjects(new VolleyCallback() {
-
-                    @Override
-                    public void onSuccess(ArrayList result) {
-                        subjectsArray.addAll(result);
-                        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, subjectsArray);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        subjects.setAdapter(adapter);
-                        subjects.setEnabled(true);
-                    }
-                }, idTutor);
-            }
-        }, 0);
+        getAllSubjects(idTutor);
 
         addSubject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,129 +110,188 @@ public class AddTermin extends Fragment  implements AddSubjectDialog.AddSubjectD
                 Calendar my = Calendar.getInstance();
                 my.set(year, month, day, hour, minute);
 
-                if(my.compareTo(Calendar.getInstance()) == 1) createTerm(idTutor, subject_id, dateAndTime);
-                else Toast.makeText(getContext(), "Please choose a valid date", Toast.LENGTH_LONG).show();
+                if (my.compareTo(Calendar.getInstance()) == 1)
+                    createTerm(idTutor, subject_id, dateAndTime);
+                else
+                    Toast.makeText(getContext(), "Please choose a valid date", Toast.LENGTH_LONG).show();
             }
         });
 
         return view;
     }
 
-    public void openDialog(){
+    private void getAllSubjects(String idTutor) {
+        final String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/subjectITeach/" + idTutor);
+        OkHttpClient client = new OkHttpClient();
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(getContext(), "Sorry there was a problem getting data. Please try later", Toast.LENGTH_LONG).show();
+                Log.i("Debug", e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+
+                try {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONArray jsonArray = new JSONArray(myResponse);
+                                ArrayList<ModelSubjectSpinner> modelSubjectSpinners = new ArrayList<>();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String id = jsonObject.getString("id");
+                                    String name = jsonObject.getString("name");
+                                    String price = jsonObject.getString("price");
+                                    ModelSubjectSpinner newModelAllSubjects = new ModelSubjectSpinner(id, name, price);
+                                    modelSubjectSpinners.add(newModelAllSubjects);
+                                }
+
+                                subjectsArray.addAll(modelSubjectSpinners);
+                                try {
+                                    adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, subjectsArray);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                subjects.setAdapter(adapter);
+                                subjects.setEnabled(true);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+
+    private void createTerm(final String idTutor, String subject_id, String dateAndTime) {
+        final String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addTermin/%s/%s/%s", idTutor, subject_id, dateAndTime);
+
+        OkHttpClient client = new OkHttpClient();
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(getContext(), "Subject cant be created", Toast.LENGTH_LONG).show();
+                Log.i("Debug", e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONArray jsonArray = new JSONArray(myResponse);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String id = jsonObject.getString("result");
+
+                            if (id.equals("1")) {
+                                Toast.makeText(getContext(), "Term successfuly created", Toast.LENGTH_LONG).show();
+                                getFragmentManager().beginTransaction()
+                                        .replace(R.id.flcontent, new Dashboard())
+                                        .commit();
+                            } else {
+                                Toast.makeText(getContext(), "Subject cant be created", Toast.LENGTH_LONG).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+
+    public void openDialog() {
         AddSubjectDialog addSubjectDialog = new AddSubjectDialog();
         addSubjectDialog.setTargetFragment(AddTermin.this, 1);
         addSubjectDialog.show(getFragmentManager().beginTransaction(), "subject dialog");
     }
 
-    private void createTerm(final String idTutor, String subject_id, String dateAndTime) {
-        final String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addTermin/%s/%s/%s", idTutor, subject_id, dateAndTime);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pushTerm(new VolleyCallback() {
-                    @Override
-                    public void onSuccess(ArrayList result) {
-                        if (result.get(0).equals("1")) {
-                            Toast.makeText(getContext(), "Term successfuly created", Toast.LENGTH_LONG).show();
-                            getFragmentManager().beginTransaction()
-                                    .replace(R.id.flcontent, new Dashboard())
-                                    .commit();
-                        }
-                        else {
-                            Toast.makeText(getContext(), "There was a problem, please try again", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }, url);
-            }
-        }, 500);
-    }
-
-    private void pushTerm(final VolleyCallback callback, final String url) {
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    ArrayList<String> result = new ArrayList<>();
-
-                    JSONObject jsonObject = response.getJSONObject(0);
-                    String id = jsonObject.getString("result");
-                    result.add(id);
-
-                    callback.onSuccess(result);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-        requestQueue.add(request);
-    }
-
-    private void getSubjects(final VolleyCallback callback, String userId) {
-        final String getSubject = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/subjectITeach/" + userId);
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getSubject, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    ArrayList<ModelSubjectSpinner> modelSubjectSpinners = new ArrayList<>();
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject jsonObject = response.getJSONObject(i);
-                        String id = jsonObject.getString("id");
-                        String name = jsonObject.getString("name");
-                        String price = jsonObject.getString("price");
-                        ModelSubjectSpinner newModelAllSubjects = new ModelSubjectSpinner(id, name, price);
-                        modelSubjectSpinners.add(newModelAllSubjects);
-                    }
-
-                    callback.onSuccess(modelSubjectSpinners);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Sorry there was a problem. Please try later", Toast.LENGTH_LONG);
-                //System.out.println("Error: " + error.toString());
-            }
-        });
-
-        requestQueue.add(request);
-    }
-
-    private void createSubject(final String idTutor, final String subject_id, String price) {
-        final String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addSubjectPrice/%s/%s/%s", idTutor, subject_id, price);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pushTerm(new VolleyCallback() {
-                    @Override
-                    public void onSuccess(ArrayList result) {
-                        //querySubjects();
-                        if (result.get(0).equals("1")) Toast.makeText(getContext(), "Subject successfuly created", Toast.LENGTH_LONG).show();
-                        else Toast.makeText(getContext(), "Subject cant be created", Toast.LENGTH_LONG).show();
-                    }
-                }, url);
-            }
-        }, 500);
-    }
-
-
-
     @Override
     public void applyChange(Subject subject, String price) {
-        createSubject(idTutor, subject.getId_subject(), price);
-        subjectsArray.add(new ModelSubjectSpinner(subject.getId_subject(), subject.getSubject(), price));
-        adapter.notifyDataSetChanged();
+//        createSubject(idTutor, subject.getId_subject(), price);
+        addSubjectTutor(idTutor, subject.getId_subject(), price);
+        ModelSubjectSpinner modelSubjectSpinner = new ModelSubjectSpinner(subject.getId_subject(), subject.getSubject(), price);
+        boolean subjectsArrayContainsNewSubject = false;
+        for (ModelSubjectSpinner model:subjectsArray) {
+            if (model.getId().equals(modelSubjectSpinner.getId())){
+                subjectsArrayContainsNewSubject = true;
+            }
+        }
+
+        if (!subjectsArrayContainsNewSubject) {
+            subjectsArray.add(modelSubjectSpinner);
+            adapter.notifyDataSetChanged();
+        }
     }
 
 
-    public interface VolleyCallback {
-        void onSuccess(ArrayList result);
+    private void addSubjectTutor(String idTutor, String idSubject, String price) {
+        final String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addSubjectPrice/%s/%s/%s", idTutor, idSubject, price);
+        OkHttpClient client = new OkHttpClient();
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("Debug", e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONArray jsonArray = new JSONArray(myResponse);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String id = jsonObject.getString("result");
+
+                            if (id.equals("1"))
+                                Toast.makeText(getContext(), "Subject successfuly created", Toast.LENGTH_LONG).show();
+                            else
+                                Toast.makeText(getContext(), "Subject cant be created", Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+            }
+        });
     }
+
 }
 

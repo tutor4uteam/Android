@@ -67,14 +67,7 @@ public class ListViewSubjectsAdapter extends BaseAdapter {
         holder.subjectName.setText(modelAllSubjectsList.get(position).getSubjectName());
         holder.tutorNum.setText(modelAllSubjectsList.get(position).getTutorNum());
 
-        /*convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "This is my Toast message! "+modelAllSubjectsList.get(position).subjectName,
-                        Toast.LENGTH_LONG).show();
 
-            }
-        });*/
 
         return convertView;
     }

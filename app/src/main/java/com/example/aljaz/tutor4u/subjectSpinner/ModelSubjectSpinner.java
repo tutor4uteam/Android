@@ -27,4 +27,6 @@ public class ModelSubjectSpinner {
     public String toString() {
         return subjectName + " (" + price + "€)";
     }
+
+
 }

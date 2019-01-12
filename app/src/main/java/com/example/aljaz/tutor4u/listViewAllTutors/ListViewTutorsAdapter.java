@@ -1,14 +1,20 @@
 package com.example.aljaz.tutor4u.listViewAllTutors;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aljaz.tutor4u.R;
+import com.example.aljaz.tutor4u.TutorProfileInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +55,8 @@ public class ListViewTutorsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = layoutInflater.inflate(R.layout.all_tutors_row, null);
@@ -70,12 +76,7 @@ public class ListViewTutorsAdapter extends BaseAdapter {
         holder.profile_name.setText(modelList.get(position).getProfile_name() + " " + modelList.get(position).getProfile_surname());
         holder.profile_grade.setText(modelList.get(position).getProfile_grade());
         holder.post.setText(modelList.get(position).getProfile_address().split(",")[1]);
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO klik na tutorja
-            }
-        });
+
 
         return convertView;
     }

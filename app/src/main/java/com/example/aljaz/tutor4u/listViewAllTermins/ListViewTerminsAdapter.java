@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.aljaz.tutor4u.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +63,11 @@ public class ListViewTerminsAdapter  extends BaseAdapter {
         else{
             holder = (ViewHolder) convertView.getTag();
         }
+        SimpleDateFormat dt1 = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        String finalDate = dt1.format(modelAllTerminsArrayList.get(position).getDate());
+
         holder.tutorName.setText(modelAllTerminsList.get(position).getTutorName());
-        holder.date.setText(modelAllTerminsList.get(position).getDate());
+        holder.date.setText(finalDate);
         holder.price.setText(modelAllTerminsList.get(position).getPrice());
 
         return convertView;

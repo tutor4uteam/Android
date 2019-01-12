@@ -1,12 +1,14 @@
 package com.example.aljaz.tutor4u.listViewAllTermins;
 
+import java.util.Date;
+
 public class ModelAllTermins {
     String tutorName;
-    String date;
+    Date date;
     String price;
     String idTermin;
 
-    public ModelAllTermins(String tutorName, String date, String price, String idTermin) {
+    public ModelAllTermins(String tutorName, Date date, String price, String idTermin) {
         this.tutorName = tutorName;
         this.date = date;
         this.price = price;
@@ -21,11 +23,13 @@ public class ModelAllTermins {
         return tutorName;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
     public String getPrice() {
         return price;
     }
+
+
 }
