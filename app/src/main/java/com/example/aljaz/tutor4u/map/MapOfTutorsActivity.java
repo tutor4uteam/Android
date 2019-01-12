@@ -1,7 +1,11 @@
 package com.example.aljaz.tutor4u.map;
 
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.aljaz.tutor4u.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -10,6 +14,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
 
 public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -38,10 +45,23 @@ public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        //mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        Geocoder geocoder = new Geocoder(getBaseContext());
+        LatLng novo = null;
 
+        try {
+            List<Address> addressList = geocoder.getFromLocationName("Novo mesto", 1);
+            addressList.get(0).getLatitude();
+            novo = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.i("debug", geocoder.toString());
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.addMarker(new MarkerOptions().position(novo).title("Marker in Novo"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(novo));
+        mMap.getMaxZoomLevel();
     }
 }

@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.aljaz.tutor4u.Helpers.Subject;
 import com.example.aljaz.tutor4u.Helpers.UserInfo;
 import com.example.aljaz.tutor4u.subjectSpinner.ModelSubjectSpinner;
 import com.google.gson.Gson;
@@ -32,14 +33,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 
-public class AddTermin extends Fragment {
+public class AddTermin extends Fragment  implements AddSubjectDialog.AddSubjectDialogListener {
 
     ArrayList<ModelSubjectSpinner> subjectsArray;
     ArrayAdapter<ModelSubjectSpinner> adapter;
@@ -49,8 +47,9 @@ public class AddTermin extends Fragment {
     DatePicker datePicker;
     TimePicker timePicker;
     Spinner subjects;
-    int day, month, year, hour, min;
-    int dayFinal, monthFinal, yearFinal, hourFinal, minFinal;
+    String idTutor = null;
+
+
 
 
     @Override
@@ -82,7 +81,7 @@ public class AddTermin extends Fragment {
         btn_create_term = view.findViewById(R.id.btn_create_term);
         addSubject = view.findViewById(R.id.addNewSubjectITeach);
 
-        final String idTutor = userInfo.getUser_id();
+        idTutor = userInfo.getUser_id();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -138,7 +137,8 @@ public class AddTermin extends Fragment {
 
     public void openDialog(){
         AddSubjectDialog addSubjectDialog = new AddSubjectDialog();
-        addSubjectDialog.show(getFragmentManager(), "subject dialog");
+        addSubjectDialog.setTargetFragment(AddTermin.this, 1);
+        addSubjectDialog.show(getFragmentManager().beginTransaction(), "subject dialog");
     }
 
     private void createTerm(final String idTutor, String subject_id, String dateAndTime) {
@@ -219,6 +219,32 @@ public class AddTermin extends Fragment {
         });
 
         requestQueue.add(request);
+    }
+
+    private void createSubject(final String idTutor, final String subject_id, String price) {
+        final String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/addSubjectPrice/%s/%s/%s", idTutor, subject_id, price);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pushTerm(new VolleyCallback() {
+                    @Override
+                    public void onSuccess(ArrayList result) {
+                        //querySubjects();
+                        if (result.get(0).equals("1")) Toast.makeText(getContext(), "Subject successfuly created", Toast.LENGTH_LONG).show();
+                        else Toast.makeText(getContext(), "Subject cant be created", Toast.LENGTH_LONG).show();
+                    }
+                }, url);
+            }
+        }, 500);
+    }
+
+
+
+    @Override
+    public void applyChange(Subject subject, String price) {
+        createSubject(idTutor, subject.getId_subject(), price);
+        subjectsArray.add(new ModelSubjectSpinner(subject.getId_subject(), subject.getSubject(), price));
+        adapter.notifyDataSetChanged();
     }
 
 

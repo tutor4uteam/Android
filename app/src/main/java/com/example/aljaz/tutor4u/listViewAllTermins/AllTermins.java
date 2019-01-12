@@ -18,6 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.aljaz.tutor4u.AddSubjectDialog;
+import com.example.aljaz.tutor4u.Helpers.Subject;
 import com.example.aljaz.tutor4u.R;
 
 import org.json.JSONArray;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-public class AllTermins extends Fragment {
+public class AllTermins extends Fragment{
     private RequestQueue requestQueue;
     ListView listView;
     ListViewTerminsAdapter adapter;
@@ -84,10 +86,11 @@ public class AllTermins extends Fragment {
 
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject jsonObject = response.getJSONObject(i);
-                        SimpleDateFormat dt = new SimpleDateFormat("MM-dd-yyyy hh-mm");
+                        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy HH-mm");
                         Date date = dt.parse(jsonObject.getString("date"));
-                        SimpleDateFormat dt1 = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+                        SimpleDateFormat dt1 = new SimpleDateFormat("dd.MM.yyyy HH:mm");
                         String finalDate = dt1.format(date);
+                        Date dateOfTerm = dt1.parse(finalDate);
 
                         String grade = jsonObject.getString("grade");
                         String id_termin = jsonObject.getString("idTermin");
@@ -95,8 +98,9 @@ public class AllTermins extends Fragment {
                         String price = jsonObject.getString("price");
                         String tutorName = jsonObject.getString("tutorName") + " " + jsonObject.getString("tutorLastname");
                         ModelAllTermins newModelAllTermins = new ModelAllTermins(tutorName, finalDate, price+" €", id_termin);
-                        modelAllTermins.add(newModelAllTermins);
-
+                        if (!new Date().after(dateOfTerm)) {
+                            modelAllTermins.add(newModelAllTermins);
+                        }
                     }
                     callback.onSuccess(modelAllTermins);
                 } catch (JSONException e) {
@@ -113,6 +117,8 @@ public class AllTermins extends Fragment {
         });
         requestQueue.add(request);
     }
+
+
 
     public interface VolleyCallback {
         void onSuccess(ArrayList result);

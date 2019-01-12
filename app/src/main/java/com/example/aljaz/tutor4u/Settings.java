@@ -1,15 +1,14 @@
 package com.example.aljaz.tutor4u;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.Toolbar;
+
+import com.example.aljaz.tutor4u.Helpers.GetData;
+
 
 public class Settings extends Fragment {
 
@@ -17,6 +16,10 @@ public class Settings extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        GetData getData = new GetData();
+        //getData.doInBackground("http://apitutor.azurewebsites.net/RestServiceImpl.svc/Tutor");
+        getData.execute("http://apitutor.azurewebsites.net/RestServiceImpl.svc/Tutor");
+
 
     }
 
