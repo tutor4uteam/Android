@@ -1,6 +1,7 @@
 package com.example.aljaz.tutor4u;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,13 +16,14 @@ import android.widget.Toast;
 import com.example.aljaz.tutor4u.Helpers.UserInfo;
 import com.example.aljaz.tutor4u.listViewAllSubjects.AllSubjects;
 import com.example.aljaz.tutor4u.listViewAllTutors.AllTutors;
+import com.example.aljaz.tutor4u.map.MapOfTutorsActivity;
 import com.google.gson.Gson;
 
 
 public class Dashboard extends Fragment {
 
 
-    private CardView allSubjectsCard, filterCard, allTutorsCard, mapCard, addTerm;
+    private CardView allSubjectsCard, filterCard, allTutorsCard, mapCard, addTerm, myTerms;
     private LinearLayout addTermLayout;
 
 
@@ -42,6 +44,7 @@ public class Dashboard extends Fragment {
         mapCard = view.findViewById(R.id.mapCardId);
         addTerm = view.findViewById(R.id.addTerm);
         addTermLayout = view.findViewById(R.id.addTermLayout);
+        myTerms = view.findViewById(R.id.seeMyTerms);
 
         SharedPreferences mPrefs = getActivity().getSharedPreferences("User_info", Context.MODE_PRIVATE);
         String json = mPrefs.getString("Profile_info", null);
@@ -73,6 +76,15 @@ public class Dashboard extends Fragment {
                         .commit();
             }
         });
+
+        mapCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent firstpage= new Intent(getActivity(),MapOfTutorsActivity.class);
+                getActivity().startActivity(firstpage);
+            }
+        });
+
         addTerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +100,13 @@ public class Dashboard extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "To be implemented",
                         Toast.LENGTH_LONG).show();
+            }
+        });
+
+        myTerms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "To be implemented", Toast.LENGTH_LONG).show();
             }
         });
         return view;

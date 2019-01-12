@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -9,242 +8,295 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
+            android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp"
             android:gravity="center"
-            android:id="@+id/ll">
+            android:orientation="vertical"
+            android:padding="10dp">
+
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
+
                 <android.support.v7.widget.CardView
+                    android:id="@+id/allSubjectsCardId"
                     android:layout_width="160dp"
                     android:layout_height="190dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
-                    android:id="@+id/allSubjectsCardId"
-                    android:foreground="?attr/selectableItemBackground"
-                    >
+                    android:foreground="?attr/selectableItemBackground">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
                         android:gravity="center"
-                        >
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:background="@drawable/ic_list_black_24dp"
-                            android:padding="10dp"
-                            />
+                            android:padding="10dp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:layout_marginTop="10dp"
-                            android:text="Subjects"/>
+                            android:text="Subjects"
+                            android:textStyle="bold" />
+
                         <View
                             android:layout_width="wrap_content"
                             android:layout_height="1dp"
-                            android:background="@color/aluminum"
-                            android:layout_margin="10dp"/>
+                            android:layout_margin="10dp"
+                            android:background="@color/aluminum" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Show all subjects"
                             android:padding="5dp"
-                            android:textColor="@android:color/darker_gray"
-                            />
+                            android:text="Show all subjects"
+                            android:textColor="@android:color/darker_gray" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/filterCardId"
                     android:layout_width="160dp"
                     android:layout_height="190dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
-                    android:id="@+id/filterCardId"
-                    android:foreground="?attr/selectableItemBackground"
-                    >
+                    android:foreground="?attr/selectableItemBackground">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
                         android:gravity="center"
-                        >
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:background="@drawable/ic_filter_list_black_24dp"
-                            android:padding="10dp"
-                            />
+                            android:padding="10dp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:layout_marginTop="10dp"
-                            android:text="Filter"/>
+                            android:text="Filter"
+                            android:textStyle="bold" />
+
                         <View
                             android:layout_width="wrap_content"
                             android:layout_height="1dp"
-                            android:background="@color/aluminum"
-                            android:layout_margin="10dp"/>
+                            android:layout_margin="10dp"
+                            android:background="@color/aluminum" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Filter what to show"
                             android:padding="5dp"
-                            android:textColor="@android:color/darker_gray"
-                            />
+                            android:text="Filter what to show"
+                            android:textColor="@android:color/darker_gray" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
+
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
+
                 <android.support.v7.widget.CardView
+                    android:id="@+id/allTutorsCardId"
                     android:layout_width="160dp"
                     android:layout_height="190dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
-                    android:id="@+id/allTutorsCardId"
-                    android:foreground="?attr/selectableItemBackground"
-                    >
+                    android:foreground="?attr/selectableItemBackground">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
                         android:gravity="center"
-                        >
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:background="@drawable/ic_person_black_24dp"
-                            android:padding="10dp"
-                            />
+                            android:padding="10dp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:layout_marginTop="10dp"
-                            android:text="Tutors"/>
+                            android:text="Tutors"
+                            android:textStyle="bold" />
+
                         <View
                             android:layout_width="wrap_content"
                             android:layout_height="1dp"
-                            android:background="@color/aluminum"
-                            android:layout_margin="10dp"/>
+                            android:layout_margin="10dp"
+                            android:background="@color/aluminum" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Show all tutors"
                             android:padding="5dp"
-                            android:textColor="@android:color/darker_gray"
-                            />
+                            android:text="Show all tutors"
+                            android:textColor="@android:color/darker_gray" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/mapCardId"
                     android:layout_width="160dp"
                     android:layout_height="190dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
-                    android:id="@+id/mapCardId"
-                    android:foreground="?attr/selectableItemBackground"
-                    >
+                    android:foreground="?attr/selectableItemBackground">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
                         android:gravity="center"
-                        >
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:background="@drawable/ic_map_black_24dp"
-                            android:padding="10dp"
-                            />
+                            android:padding="10dp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:layout_marginTop="10dp"
-                            android:text="Map"/>
+                            android:text="Map"
+                            android:textStyle="bold" />
+
                         <View
                             android:layout_width="wrap_content"
                             android:layout_height="1dp"
-                            android:background="@color/aluminum"
-                            android:layout_margin="10dp"/>
+                            android:layout_margin="10dp"
+                            android:background="@color/aluminum" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Check tutors on map"
                             android:padding="5dp"
-                            android:textColor="@android:color/darker_gray"
-                            />
+                            android:text="Check tutors on map"
+                            android:textColor="@android:color/darker_gray" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/addTermLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/addTermLayout"
                 android:visibility="gone">
+
                 <android.support.v7.widget.CardView
+                    android:id="@+id/seeMyTerms"
                     android:layout_width="160dp"
                     android:layout_height="190dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
-                    android:id="@+id/addTerm"
-                    android:foreground="?attr/selectableItemBackground"
-                    >
+                    android:foreground="?attr/selectableItemBackground">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
                         android:gravity="center"
-                        >
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:background="@drawable/ic_add_black_24dp"
-                            android:padding="10dp"
-                            />
+                            android:background="@drawable/ic_note_black_24dp"
+                            android:padding="10dp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:layout_marginTop="10dp"
-                            android:text="Add Term"/>
+                            android:text="My terms"
+                            android:textStyle="bold" />
+
                         <View
                             android:layout_width="wrap_content"
                             android:layout_height="1dp"
-                            android:background="@color/aluminum"
-                            android:layout_margin="10dp"/>
+                            android:layout_margin="10dp"
+                            android:background="@color/aluminum" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Adding new terms"
                             android:padding="5dp"
-                            android:textColor="@android:color/darker_gray"
-                            />
+                            android:text="See all your terms"
+                            android:textColor="@android:color/darker_gray" />
                     </LinearLayout>
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:id="@+id/addTerm"
+                    android:layout_width="160dp"
+                    android:layout_height="190dp"
+                    android:layout_margin="10dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:background="@drawable/ic_add_black_24dp"
+                            android:padding="10dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Add Term"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_margin="10dp"
+                            android:background="@color/aluminum" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Adding new terms"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
                 </android.support.v7.widget.CardView>
 
 

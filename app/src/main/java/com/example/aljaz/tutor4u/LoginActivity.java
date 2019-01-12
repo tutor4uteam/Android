@@ -59,6 +59,7 @@ public class LoginActivity extends Fragment {
         View view = inflater.inflate(R.layout.activity_log, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Login");
 
+
         emailText = view.findViewById(R.id.input_email);
         passwordText = view.findViewById(R.id.input_password);
 

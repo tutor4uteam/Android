@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 
 public class TutorMainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
-
+    NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
     private android.support.v7.widget.Toolbar toolbar;
 
@@ -31,7 +31,7 @@ public class TutorMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tutor_main);
         toolbar = findViewById(R.id.tutorToolbar);
         setSupportActionBar(toolbar);
-        final NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView = findViewById(R.id.navigation_view);
 
         //final UserInfo userInfo = (UserInfo) getIntent().getSerializableExtra("UserInfo");
         // Retrive user info
@@ -135,8 +135,11 @@ public class TutorMainActivity extends AppCompatActivity {
                 pref.clear();
                 pref.commit();
 
-                //intent = new Intent(getApplicationContext(), LoginActivity.class);
-                fragmentClass = LoginActivity.class;
+
+
+
+                intent = new Intent(getApplicationContext(), TutorMainActivity.class);
+                //fragmentClass = Dashboard.class;
                 tag = "Login";
                 break;
             case R.id.db:
