@@ -69,7 +69,7 @@ public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyC
                 TutorProfileInfo tutorProfileInfo = new TutorProfileInfo();
                 String[] userData = marker.getSnippet().split("/");
                 marker.setSnippet("");
-                ModelAllTutors m = new ModelAllTutors(null, userData[0], userData[1], userData[2], userData[3], userData[4], userData[5]);
+                ModelAllTutors m = new ModelAllTutors(userData[0], null, userData[1], userData[2], userData[3], userData[4], userData[5], userData[6]);
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("id_tutor", m);
@@ -120,7 +120,8 @@ public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyC
                                     String mail = jsonObject.getString("mail");
                                     String phone = jsonObject.getString("phone");
                                     String grade = jsonObject.getString("grade");
-                                    String line = name + "/" + surname + "/" + address + "/" + mail + "/" + phone + "/" + grade;
+                                    String idTutor = jsonObject.getString("idTutor");
+                                    String line = idTutor + "/" + name + "/" + surname + "/" + address + "/" + mail + "/" + phone + "/" + grade;
                                     tutors.put(name + " " + surname + "." + line, address);
                                 }
                             } catch (JSONException e) {
