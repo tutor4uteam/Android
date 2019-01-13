@@ -9,10 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.aljaz.tutor4u.Helpers.GetData;
-
-import org.json.JSONArray;
-
 import java.io.IOException;
 
 import okhttp3.Call;
