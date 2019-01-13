@@ -39,20 +39,19 @@
                     android:textStyle="bold" />
 
 
-
                 <TextView
                     android:id="@+id/student_term_address"
-                    android:paddingTop="5dp"
-                    android:paddingLeft="10dp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:singleLine="true"
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
                     android:maxWidth="@android:dimen/thumbnail_width"
-                    android:textSize="20sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
                     android:text="Velika vas 59, Leskovec pri krškem"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
