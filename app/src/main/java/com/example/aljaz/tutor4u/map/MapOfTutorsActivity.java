@@ -1,46 +1,29 @@
 package com.example.aljaz.tutor4u.map;
 
-import android.content.Context;
-import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.aljaz.tutor4u.R;
-import com.example.aljaz.tutor4u.listViewAllTutors.AllTutors;
+import com.example.aljaz.tutor4u.TutorProfileInfo;
 import com.example.aljaz.tutor4u.listViewAllTutors.ModelAllTutors;
-import com.example.aljaz.tutor4u.subjectSpinner.ModelSubjectSpinner;
-import com.google.android.gms.maps.CameraUpdateFactory;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -50,8 +33,8 @@ import okhttp3.OkHttpClient;
 public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private HashMap<String, String> tutors = new HashMap<String, String>();
     SupportMapFragment mapFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +43,8 @@ public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyC
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
     }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -77,29 +59,36 @@ public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyC
         getAllTutors();
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        Geocoder geocoder = new Geocoder(getBaseContext());
-
-        try {
-            for (Map.Entry<String, String> tutor : tutors.entrySet()) {
-
-                mMap.addMarker(new MarkerOptions().position(new LatLng(geocoder.getFromLocationName(tutor.getValue(), 1).get(0).getLatitude(),
-                        geocoder.getFromLocationName(tutor.getValue(), 1).get(0).getLongitude())).title(tutor.getKey()));
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 
         //mMap.moveCamera();
-        //mMap.getMaxZoomLevel();
+        mMap.getMaxZoomLevel();
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                TutorProfileInfo tutorProfileInfo = new TutorProfileInfo();
+                String[] userData = marker.getSnippet().split("/");
+                marker.setSnippet("");
+                ModelAllTutors m = new ModelAllTutors(null, userData[0], userData[1], userData[2], userData[3], userData[4], userData[5]);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("id_tutor", m);
+
+                tutorProfileInfo.setArguments(bundle);
+
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.flcontent, tutorProfileInfo)
+                        .addToBackStack(null)
+                        .commit();
+                return false;
+            }
+        });
     }
 
     private void getAllTutors() {
         final String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/Tutor");
+        final HashMap<String, String> tutors = new HashMap<String, String>();
+        final Geocoder geocoder = new Geocoder(getBaseContext());
         OkHttpClient client = new OkHttpClient();
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(url)
@@ -128,9 +117,23 @@ public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyC
                                     String name = jsonObject.getString("name");
                                     String surname = jsonObject.getString("surname");
                                     String address = jsonObject.getString("address");
-                                    tutors.put(name + " " + surname, address);
+                                    String mail = jsonObject.getString("mail");
+                                    String phone = jsonObject.getString("phone");
+                                    String grade = jsonObject.getString("grade");
+                                    String line = name + "/" + surname + "/" + address + "/" + mail + "/" + phone + "/" + grade;
+                                    tutors.put(name + " " + surname + "." + line, address);
                                 }
                             } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                for (Map.Entry<String, String> tutor : tutors.entrySet()) {
+                                    String[] neki = tutor.getKey().split(".");
+                                    Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(geocoder.getFromLocationName(tutor.getValue(), 1).get(0).getLatitude(),
+                                            geocoder.getFromLocationName(tutor.getValue(), 1).get(0).getLongitude())).title(neki[0]).snippet(neki[1]));
+                                }
+
+                            } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
