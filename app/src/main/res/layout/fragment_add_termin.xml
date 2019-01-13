@@ -39,7 +39,7 @@
             android:id="@+id/datePicked"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary_dark"
+            android:background="@color/cardview_shadow_start_color"
             android:calendarViewShown="false"
             android:datePickerMode="spinner"></DatePicker>
         <View
@@ -52,7 +52,7 @@
             android:id="@+id/timePicked"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary_dark"
+            android:background="@color/cardview_shadow_start_color"
             android:timePickerMode="spinner"></TimePicker>
 
 

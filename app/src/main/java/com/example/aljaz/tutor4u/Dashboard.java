@@ -17,6 +17,8 @@ import com.example.aljaz.tutor4u.Helpers.UserInfo;
 import com.example.aljaz.tutor4u.listViewAllSubjects.AllSubjects;
 import com.example.aljaz.tutor4u.listViewAllTutors.AllTutors;
 import com.example.aljaz.tutor4u.listViewStudentTerms.MyTermsStudent;
+import com.example.aljaz.tutor4u.listViewTutorTerms.ListViewTutorTerms;
+import com.example.aljaz.tutor4u.listViewTutorTerms.freeTerms.AllFreeTermsTutor;
 import com.example.aljaz.tutor4u.map.MapOfTutorsActivity;
 import com.google.gson.Gson;
 
@@ -85,6 +87,7 @@ public class Dashboard extends Fragment {
             public void onClick(View v) {
                 Intent firstpage= new Intent(getActivity(),MapOfTutorsActivity.class);
                 getActivity().startActivity(firstpage);
+
             }
         });
 
@@ -109,7 +112,10 @@ public class Dashboard extends Fragment {
         myTerms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "To be implemented", Toast.LENGTH_LONG).show();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.flcontent, new AllFreeTermsTutor())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

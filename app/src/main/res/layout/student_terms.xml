@@ -39,20 +39,20 @@
                     android:textStyle="bold" />
 
 
-
                 <TextView
                     android:id="@+id/student_term_address"
-                    android:paddingTop="5dp"
-                    android:paddingLeft="10dp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:singleLine="true"
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
                     android:maxWidth="@android:dimen/thumbnail_width"
-                    android:textSize="20sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
                     android:text="Velika vas 59, Leskovec pri krškem"
+                    android:textAlignment="textEnd"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -72,15 +72,17 @@
                     android:textSize="15dp"
 
                     android:text="Angleščina"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="20dp"
-                    android:paddingLeft="30dp"
-                    android:textSize="15dp"
 
+                <TextView
                     android:id="@+id/student_term_date"
-                    android:text="22.05.2019 15:30" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="20dp"
+
+                    android:text="22.05.2019 15:30"
+                    android:textAlignment="textEnd"
+                    android:textSize="15dp" />
             </LinearLayout>
 
         </LinearLayout>

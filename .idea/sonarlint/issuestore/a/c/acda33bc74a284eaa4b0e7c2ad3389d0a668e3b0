@@ -1,0 +1,19 @@
+
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8Èâ¹„-
+Csquid:S1185"(Remove this method to simply inherit it.(¥Ë©8Èâ¹„-
+]squid:UselessImportCheck"4Remove this unused import 'android.content.Context'.(©Ê‰è8Èâ¹„-
+?squid:S1659"#Declare "grade" on a separate line.(Æà™¢8Èâ¹„-
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8Èâ¹„-
+?squid:S1659"#Declare "phone" on a separate line.(Æà™¢8Èâ¹„-
+Vsquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8Èâ¹„-
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¦ƒÜ·şÿÿÿÿ8Èâ¹„-
+fsquid:S2147"ECombine this catch with the one at line 145, which has the same body.(âÃƒŠıÿÿÿÿ8Èâ¹„-
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8Èâ¹„-
+?squid:S1659"#Declare "email" on a separate line.(Æà™¢8Èâ¹„-
+nsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(«º×é8Èâ¹„-
+fsquid:UselessImportCheck"8Remove this unused import 'android.widget.LinearLayout'.(çîšçúÿÿÿÿ8Èâ¹„-
+nsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ñÃÁ¼8Èâ¹„-
+bsquid:S3457"AFormat specifiers should be used instead of string concatenation.(ëÜ÷˜ûÿÿÿÿ8Èâ¹„-
+fsquid:UselessImportCheck"8Remove this unused import 'android.widget.ArrayAdapter'.( €ŠÑÿÿÿÿÿ8Èâ¹„-
+Asquid:S1659"%Declare "address" on a separate line.(Æà™¢8Èâ¹„-
+Zsquid:UselessImportCheck",Remove this unused import 'android.net.Uri'.(òêû‘ıÿÿÿÿ8Èâ¹„-

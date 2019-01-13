@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListViewTerminsAdapter  extends BaseAdapter {
+public class ListViewTerminsAdapter extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater;
     List<ModelAllTermins> modelAllTerminsList;
@@ -27,7 +27,7 @@ public class ListViewTerminsAdapter  extends BaseAdapter {
         this.modelAllTerminsArrayList.addAll(modelAllTerminsList);
     }
 
-    public class ViewHolder{
+    public class ViewHolder {
         TextView tutorName, date, price;
 
     }
@@ -50,7 +50,7 @@ public class ListViewTerminsAdapter  extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        if(convertView == null){
+        if (convertView == null) {
             holder = new ViewHolder();
             convertView = layoutInflater.inflate(R.layout.termin_row, null);
 
@@ -59,8 +59,7 @@ public class ListViewTerminsAdapter  extends BaseAdapter {
             holder.price = convertView.findViewById(R.id.termin_row_price);
 
             convertView.setTag(holder);
-        }
-        else{
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
         SimpleDateFormat dt1 = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -70,6 +69,7 @@ public class ListViewTerminsAdapter  extends BaseAdapter {
         holder.tutorName.setSelected(true);
         holder.date.setText(finalDate);
         holder.price.setText(modelAllTerminsList.get(position).getPrice());
+
 
         return convertView;
     }

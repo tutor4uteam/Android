@@ -161,6 +161,7 @@ public class AllSubjects extends Fragment {
                         ModelAllSubjects newModelAllSubjects = new ModelAllSubjects(id, name, freeTerms);
                         modelAllSubjects.add(newModelAllSubjects);
                     }
+                    if (modelAllSubjects.isEmpty()) modelAllSubjects.add(new ModelAllSubjects("", "There are no terms for this subject", ""));
 
                     callback.onSuccess(modelAllSubjects);
                 } catch (JSONException e) {

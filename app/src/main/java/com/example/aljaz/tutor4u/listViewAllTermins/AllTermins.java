@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.aljaz.tutor4u.Helpers.UserInfo;
 import com.example.aljaz.tutor4u.R;
 import com.example.aljaz.tutor4u.TakeTermin;
+import com.example.aljaz.tutor4u.listViewAllSubjects.AllSubjects;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -145,6 +146,13 @@ public class AllTermins extends Fragment {
                         if (!new Date().after(dateOfTerm)) {
                             modelAllTermins.add(newModelAllTermins);
                         }
+
+                            if (modelAllTermins.isEmpty()) {
+                                Toast.makeText(getContext(), "There are currently no termins for this subject", Toast.LENGTH_LONG).show();
+                                getFragmentManager().beginTransaction()
+                                        .replace(R.id.flcontent, new AllSubjects())
+                                        .commit();
+                            }
                     }
                     callback.onSuccess(modelAllTermins);
                 } catch (JSONException e) {

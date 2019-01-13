@@ -1,0 +1,7 @@
+
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ8¯”àº„-
+gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(·Žß¶8¨ö‚»„-
+jsquid:MaximumInheritanceDepth"<This class has 6 parents which is greater than 5 authorized.(£ü¤”8„÷º„-
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ8¯”àº„-
+Asquid:S3457"%String contains no format specifiers.(Ôðª•8„÷º„-
+ssquid:UselessImportCheck"ERemove this unused import 'com.google.android.gms.maps.CameraUpdate'.(‘ÈÝ…úÿÿÿÿ8„÷º„-

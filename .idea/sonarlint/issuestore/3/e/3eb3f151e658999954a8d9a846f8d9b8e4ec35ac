@@ -1,0 +1,24 @@
+
+N"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(¿›İ”
+[squid:S1192"FDefine a constant instead of duplicating this literal "Login" 4 times.(ş‡æÑ
+dsquid:S1192"JDefine a constant instead of duplicating this literal "Dashboard" 3 times.(ºÆÅûÿÿÿÿ
+ksquid:S1450"VRemove the "toolbar" field and declare it as a local variable in the relevant methods.(Ë«ãÙ
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¢ó„ûÿÿÿÿ
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ú´à‰şÿÿÿÿ
+lsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(¨Œşÿÿÿÿ
+esquid:S2259"KA "NullPointerException" could be thrown; "fragmentClass" is nullable here.(±êÉ–üÿÿÿÿ
+hsquid:S2259"NA "NullPointerException" could be thrown; "userInfoFragment" is nullable here.(ÆŸÉºøÿÿÿÿ
+Ysquid:S2147"DCombine this catch with the one at line 47, which has the same body.(Å¡ß
+Ysquid:S2147"DCombine this catch with the one at line 72, which has the same body.(Å¡ß
+Ysquid:S2147"DCombine this catch with the one at line 98, which has the same body.(Å¡ß
+Vsquid:UselessImportCheck"4Remove this unused import 'android.content.Context'.(©Ê‰è
+ksquid:UselessImportCheck"DRemove this unused import 'com.example.aljaz.tutor4u.Helpers.Tutor'.(ñªØÓøÿÿÿÿ
+hsquid:UselessImportCheck"FRemove this unused import 'com.example.aljaz.tutor4u.Helpers.Subject'.(â˜Êî
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+hsquid:MaximumInheritanceDepth"<This class has 7 parents which is greater than 5 authorized.(‘†÷”üÿÿÿÿ

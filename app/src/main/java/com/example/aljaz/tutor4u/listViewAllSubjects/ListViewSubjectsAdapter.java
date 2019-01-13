@@ -54,7 +54,7 @@ public class ListViewSubjectsAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.all_subjects_row, null);
 
             holder.subjectName = convertView.findViewById(R.id.subjectName);
-            holder.tutorNum  = convertView.findViewById(R.id.tutorsNum);
+            //holder.tutorNum  = convertView.findViewById(R.id.tutorsNum);
 
             convertView.setTag(holder);
 
@@ -65,7 +65,7 @@ public class ListViewSubjectsAdapter extends BaseAdapter {
         }
 
         holder.subjectName.setText(modelAllSubjectsList.get(position).getSubjectName());
-        holder.tutorNum.setText(modelAllSubjectsList.get(position).getTutorNum());
+        //holder.tutorNum.setText(modelAllSubjectsList.get(position).getTutorNum());
 
 
 

@@ -53,7 +53,7 @@ public class TutorProfileInfo extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tutor_profile_info, container, false);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Tutor information");
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Tutor information");
 
         Bundle bundle = getArguments();
         final ModelAllTutors tutorInformation = (ModelAllTutors) bundle.getSerializable("id_tutor");
