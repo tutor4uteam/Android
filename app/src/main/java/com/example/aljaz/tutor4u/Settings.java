@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
+import android.view.ViewGroup.LayoutParams;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -20,6 +22,7 @@ import okhttp3.Response;
 
 public class Settings extends Fragment {
     TextView textView;
+    LinearLayout linearLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +41,16 @@ public class Settings extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Settings");
 
-        textView = view.findViewById(R.id.text_settings);
-
+        //textView = view.findViewById(R.id.text_settings);
+        linearLayout = view.findViewById(R.id.customRow);
+        for (int i = 0; i < 10; i++) {
+            TextView valueTV = new TextView(getContext());
+            valueTV.setText("hallo hallo");
+            valueTV.setId(i);
+            valueTV.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+            valueTV.setPadding(0,10,0,0);
+            linearLayout.addView(valueTV);
+        }
 
         String url = "http://apitutor.azurewebsites.net/RestServiceImpl.svc/Tutor";
         OkHttpClient client = new OkHttpClient();
@@ -66,6 +77,8 @@ public class Settings extends Fragment {
                 });
             }
         });
+
+
 
         return view;
     }

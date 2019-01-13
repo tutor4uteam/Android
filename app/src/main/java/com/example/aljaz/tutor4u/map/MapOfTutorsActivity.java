@@ -3,6 +3,7 @@ package com.example.aljaz.tutor4u.map;
 import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -76,7 +77,7 @@ public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyC
 
                 tutorProfileInfo.setArguments(bundle);
 
-                getFragmentManager().beginTransaction()
+                getSupportFragmentManager().beginTransaction()
                         .replace(R.id.flcontent, tutorProfileInfo)
                         .addToBackStack(null)
                         .commit();
@@ -129,7 +130,7 @@ public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyC
                             }
                             try {
                                 for (Map.Entry<String, String> tutor : tutors.entrySet()) {
-                                    String[] neki = tutor.getKey().split(".");
+                                    String[] neki = tutor.getKey().split("\\.");
                                     Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(geocoder.getFromLocationName(tutor.getValue(), 1).get(0).getLatitude(),
                                             geocoder.getFromLocationName(tutor.getValue(), 1).get(0).getLongitude())).title(neki[0]).snippet(neki[1]));
                                 }

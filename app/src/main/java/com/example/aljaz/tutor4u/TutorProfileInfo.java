@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,7 +77,7 @@ public class TutorProfileInfo extends Fragment {
         return view;
     }
 
-    private void getTutorTermins(String tutorId) {
+    private void getTutorTermins(final String tutorId) {
         final String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/MyTerminTutor/" + tutorId);
         OkHttpClient client = new OkHttpClient();
         okhttp3.Request request = new okhttp3.Request.Builder()
@@ -113,9 +114,10 @@ public class TutorProfileInfo extends Fragment {
                                     String id_termin = jsonObject.getString("idTermin");
                                     String price = jsonObject.getString("price");
                                     String subjectName = jsonObject.getString("subject");
-                                    ModelAllTermins newModelAllTermins = new ModelAllTermins(subjectName, dateOfTerm, price + " €", id_termin);
+                                    ModelAllTermins newModelAllTermins = new ModelAllTermins(tutorId, subjectName, dateOfTerm, price + " €", id_termin);
                                     if (!new Date().after(dateOfTerm)) {
                                         modelAllTermins.add(newModelAllTermins);
+
                                     }
                                 }
 

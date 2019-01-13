@@ -1,11 +1,12 @@
 package com.example.aljaz.tutor4u.listViewAllTermins;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.aljaz.tutor4u.AddSubjectDialog;
-import com.example.aljaz.tutor4u.Helpers.Subject;
+import com.example.aljaz.tutor4u.Helpers.UserInfo;
 import com.example.aljaz.tutor4u.R;
+import com.example.aljaz.tutor4u.TakeTermin;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +33,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -41,7 +42,7 @@ public class AllTermins extends Fragment {
     private RequestQueue requestQueue;
     ListView listView;
     ListViewTerminsAdapter adapter;
-    ArrayList<ModelAllTermins> arrayList = new ArrayList<>();
+    ArrayList<ModelAllTermins> arrayList;
     private ProgressBar spinner;
 
     @Override
@@ -57,6 +58,13 @@ public class AllTermins extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("All termins");
         spinner = view.findViewById(R.id.progressBar1);
         spinner.setVisibility(View.VISIBLE);
+        arrayList = new ArrayList<>();
+
+        SharedPreferences mPrefs = getActivity().getSharedPreferences("User_info", Context.MODE_PRIVATE);
+        String json = mPrefs.getString("Profile_info", null);
+        Gson gson = new Gson();
+        final UserInfo userInfo = gson.fromJson(json, UserInfo.class);
+
         Bundle bundle = getArguments();
         final String idSubject = bundle.getString("id_subject");
 
@@ -79,7 +87,7 @@ public class AllTermins extends Fragment {
                         try {
                             adapter = new ListViewTerminsAdapter(getContext(), arrayList);
 
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         listView.setAdapter(adapter);
@@ -90,8 +98,23 @@ public class AllTermins extends Fragment {
         }, 1000);
 
         listView = view.findViewById(R.id.listViewTermins);
+        if (userInfo.getRole().equals("student")) {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    TakeTermin takeTermin = new TakeTermin();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("termin", arrayList.get(position));
 
+                    takeTermin.setArguments(bundle);
 
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.flcontent, takeTermin)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            });
+        }
 
 
         return view;
@@ -118,7 +141,7 @@ public class AllTermins extends Fragment {
                         String id_tutor = jsonObject.getString("idTutor");
                         String price = jsonObject.getString("price");
                         String tutorName = jsonObject.getString("tutorName") + " " + jsonObject.getString("tutorLastname");
-                        ModelAllTermins newModelAllTermins = new ModelAllTermins(tutorName, dateOfTerm, price + " €", id_termin);
+                        ModelAllTermins newModelAllTermins = new ModelAllTermins(id_tutor, tutorName, dateOfTerm, price + " €", id_termin);
                         if (!new Date().after(dateOfTerm)) {
                             modelAllTermins.add(newModelAllTermins);
                         }
