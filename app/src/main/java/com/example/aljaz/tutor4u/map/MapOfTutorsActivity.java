@@ -3,7 +3,6 @@ package com.example.aljaz.tutor4u.map;
 import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -70,6 +69,10 @@ public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyC
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+
+                Toast toast = Toast.makeText(getBaseContext(), "To be implemented", Toast.LENGTH_LONG);
+                toast.show();
+                /* TODO: Show user profile when clicked on marker
                 TutorProfileInfo tutorProfileInfo = new TutorProfileInfo();
                 TutorOnMap tutorOnMap = (TutorOnMap) marker.getTag();
 
@@ -80,13 +83,11 @@ public class MapOfTutorsActivity extends FragmentActivity implements OnMapReadyC
 
                 tutorProfileInfo.setArguments(bundle);
 
-                /*getSupportFragmentManager().beginTransaction()
+                getSupportFragmentManager().beginTransaction()
                         .replace(R.id.flcontent, tutorProfileInfo)
                         .addToBackStack(null)
-                        .commit();*/
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-                fragmentTransaction.hide(getSupportFragmentManager().findFragmentById(R.id.flcontent));
+                        .commit();
+                return false;*/
                 return false;
             }
         });
