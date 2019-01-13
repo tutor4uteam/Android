@@ -1,4 +1,4 @@
-package com.example.aljaz.tutor4u;
+package com.example.aljaz.tutor4u.listViewStudentTerms;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,13 +12,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.aljaz.tutor4u.Dashboard;
 import com.example.aljaz.tutor4u.Helpers.UserInfo;
-import com.example.aljaz.tutor4u.listViewAllTermins.ModelAllTermins;
+import com.example.aljaz.tutor4u.Interface.DialogCallback;
+import com.example.aljaz.tutor4u.R;
+import com.example.aljaz.tutor4u.utils.GlobalUtils;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -38,9 +42,10 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 
 
-public class TakeTermin extends Fragment {
-    TextView username, userAddress, userMail, userPhone, terminDate, terminPrice;
-    Button takeTerm;
+public class MyTermsStudent extends Fragment {
+    ListView listView;
+    ListViewStudentTermsAdapter adapter;
+    ArrayList<ModelStudentTerm> arrayList;
     private ProgressBar spinner;
 
     @Override
@@ -51,49 +56,42 @@ public class TakeTermin extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_take_termin, container, false);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Tutor information");
+        View view = inflater.inflate(R.layout.fragment_my_terms_student, container, false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("My Terms");
 
         spinner = view.findViewById(R.id.progressBar1);
         spinner.setVisibility(View.VISIBLE);
-
-        username = view.findViewById(R.id.UserName);
-        userAddress = view.findViewById(R.id.userAddress);
-        userMail = view.findViewById(R.id.userMail);
-        userPhone = view.findViewById(R.id.userPhone);
-        terminDate = view.findViewById(R.id.terminDate);
-        terminPrice = view.findViewById(R.id.terminPrice);
-
-        username.setSelected(true);
-        userAddress.setSelected(true);
-        userMail.setSelected(true);
-        userPhone.setSelected(true);
-
-        takeTerm = view.findViewById(R.id.btn_take_term);
-
-
+        arrayList = new ArrayList<>();
+        listView = view.findViewById(R.id.listViewStudentTerm);
         SharedPreferences mPrefs = getActivity().getSharedPreferences("User_info", Context.MODE_PRIVATE);
         String json = mPrefs.getString("Profile_info", null);
         Gson gson = new Gson();
         final UserInfo userInfo = gson.fromJson(json, UserInfo.class);
 
-        Bundle bundle = getArguments();
-        final ModelAllTermins tutorInformation = (ModelAllTermins) bundle.getSerializable("termin");
+        getAllTerms(userInfo.getUser_id());
 
-        getTutorInfo(tutorInformation);
-
-        takeTerm.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                takeTermin(userInfo.getUser_id(),  tutorInformation.getIdTermin());
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                showDialog(view, arrayList.get(position));
             }
         });
 
         return view;
     }
 
-    private void takeTermin(String user_id, String idTermin) {
-        String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/TakeTermin/%s/%s", idTermin, user_id);
+    public void showDialog(View view, final ModelStudentTerm modelStudentTerm){
+        GlobalUtils.showDialog(getContext(), new DialogCallback() {
+            @Override
+            public void callback(String ratings) {
+                giveGrade(modelStudentTerm.getTerminId(), ratings);
+            }
+        });
+    }
+
+    private void giveGrade(String terminId, String ratings) {
+        String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/GiveGrade/%s/%s", terminId, ratings);
         OkHttpClient client = new OkHttpClient();
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(url)
@@ -120,12 +118,10 @@ public class TakeTermin extends Fragment {
                             String id = jsonObject.getString("result");
 
                             if (id.equals("1")) {
-                                Toast.makeText(getContext(), "Term successfuly taken", Toast.LENGTH_LONG).show();
-                                getFragmentManager().beginTransaction()
-                                        .replace(R.id.flcontent, new Dashboard())
-                                        .commit();
+                                Toast.makeText(getContext(), "Thank you for your vote", Toast.LENGTH_LONG).show();
+
                             } else {
-                                Toast.makeText(getContext(), "Term cant be taken", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "Ups, there was a problem :(", Toast.LENGTH_LONG).show();
                             }
 
                         } catch (JSONException e) {
@@ -138,9 +134,8 @@ public class TakeTermin extends Fragment {
         });
     }
 
-
-    private void getTutorInfo(final ModelAllTermins tutorInformation) {
-        final String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/Tutor/" + tutorInformation.getIdTutor());
+    private void getAllTerms(String idStudent) {
+        final String url = String.format("http://apitutor.azurewebsites.net/RestServiceImpl.svc/MyTerminStudent/" + idStudent);
         OkHttpClient client = new OkHttpClient();
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(url)
@@ -164,29 +159,47 @@ public class TakeTermin extends Fragment {
                         public void run() {
                             try {
                                 JSONArray jsonArray = new JSONArray(myResponse);
-                                ArrayList<ModelAllTermins> modelAllTermins = new ArrayList<>();
+                                ArrayList<ModelStudentTerm> modelStudentTerms = new ArrayList<>();
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    String address = jsonObject.getString("address");
-                                    String grade = jsonObject.getString("grade");
-                                    String mail = jsonObject.getString("mail");
-                                    String phone = jsonObject.getString("phone");
+                                    String tutorId = jsonObject.getString("tutorId");
+                                    String terminId = jsonObject.getString("idTermin");
+                                    String tutorName = jsonObject.getString("tutorName") + " " + jsonObject.getString("tutorLastname");
+                                    String tutorAddress = jsonObject.getString("address");
+                                    String subject = jsonObject.getString("subject");
 
-                                    username.setText(tutorInformation.getTutorName());
-                                    userAddress.setText(address);
-                                    userMail.setText(mail);
-                                    userPhone.setText(phone);
+                                    SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy HH-mm");
+                                    Date date = dt.parse(jsonObject.getString("date"));
                                     SimpleDateFormat dt1 = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-                                    String finalDate = dt1.format(tutorInformation.getDate());
-                                    terminDate.setText(finalDate);
-                                    terminPrice.setText(tutorInformation.getPrice());
+                                    String finalDate = dt1.format(date);
+                                    Date dateOfTerm = dt1.parse(finalDate);
 
-                                    spinner.setVisibility(View.GONE);
-
+                                    ModelStudentTerm newModelAllSubjects = new ModelStudentTerm(tutorId, terminId, tutorName, tutorAddress, subject, dateOfTerm);
+                                    if (!new Date().after(dateOfTerm)) {
+                                        modelStudentTerms.add(newModelAllSubjects);
+                                    }
                                 }
 
+                                arrayList.addAll(modelStudentTerms);
+                                arrayList.sort(new Comparator<ModelStudentTerm>() {
+                                    @Override
+                                    public int compare(ModelStudentTerm o1, ModelStudentTerm o2) {
+                                        return o1.date.compareTo(o2.date);
+                                    }
+                                });
+                                Collections.reverse(arrayList);
+                                try {
+                                    adapter = new ListViewStudentTermsAdapter(getContext(), arrayList);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                listView.setAdapter(adapter);
+                                spinner.setVisibility(View.GONE);
 
                             } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (ParseException e) {
                                 e.printStackTrace();
                             }
 
@@ -197,7 +210,5 @@ public class TakeTermin extends Fragment {
                 }
             }
         });
-
-
     }
 }

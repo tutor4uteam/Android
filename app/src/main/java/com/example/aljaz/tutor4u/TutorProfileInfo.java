@@ -61,10 +61,14 @@ public class TutorProfileInfo extends Fragment {
         listView = view.findViewById(R.id.tutorTermins);
 
         name = view.findViewById(R.id.username);
+        name.setSelected(true);
         grade = view.findViewById(R.id.grade);
         email = view.findViewById(R.id.userMail);
+        email.setSelected(true);
         phone = view.findViewById(R.id.userPhone);
+        phone.setSelected(true);
         address = view.findViewById(R.id.userAddress);
+        address.setSelected(true);
 
         name.setText(tutorInformation.getProfile_name() + " " + tutorInformation.getProfile_surname());
         grade.setText(tutorInformation.getProfile_grade());

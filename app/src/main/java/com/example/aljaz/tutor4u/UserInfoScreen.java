@@ -34,6 +34,10 @@ public class UserInfoScreen extends Fragment {
         email = view.findViewById(R.id.userMail);
         phone = view.findViewById(R.id.userPhone);
         address = view.findViewById(R.id.userAddress);
+        name.setSelected(true);
+        email.setSelected(true);
+        phone.setSelected(true);
+        address.setSelected(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("User info");
 
         /*Bundle bundle = this.getArguments();

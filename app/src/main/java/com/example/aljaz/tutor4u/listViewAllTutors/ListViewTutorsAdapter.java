@@ -74,9 +74,10 @@ public class ListViewTutorsAdapter extends BaseAdapter {
         }
 
         holder.profile_name.setText(modelList.get(position).getProfile_name() + " " + modelList.get(position).getProfile_surname());
+        holder.profile_name.setSelected(true);
         holder.profile_grade.setText(modelList.get(position).getProfile_grade());
         holder.post.setText(modelList.get(position).getProfile_address().split(",")[1]);
-
+        holder.post.setSelected(true);
 
         return convertView;
     }

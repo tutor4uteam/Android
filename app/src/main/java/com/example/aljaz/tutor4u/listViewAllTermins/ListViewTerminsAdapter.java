@@ -67,6 +67,7 @@ public class ListViewTerminsAdapter  extends BaseAdapter {
         String finalDate = dt1.format(modelAllTerminsArrayList.get(position).getDate());
 
         holder.tutorName.setText(modelAllTerminsList.get(position).getTutorName());
+        holder.tutorName.setSelected(true);
         holder.date.setText(finalDate);
         holder.price.setText(modelAllTerminsList.get(position).getPrice());
 

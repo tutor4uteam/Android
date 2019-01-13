@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.aljaz.tutor4u.Helpers.UserInfo;
 import com.example.aljaz.tutor4u.listViewAllSubjects.AllSubjects;
 import com.example.aljaz.tutor4u.listViewAllTutors.AllTutors;
+import com.example.aljaz.tutor4u.listViewStudentTerms.MyTermsStudent;
 import com.example.aljaz.tutor4u.map.MapOfTutorsActivity;
 import com.google.gson.Gson;
 
@@ -23,8 +24,8 @@ import com.google.gson.Gson;
 public class Dashboard extends Fragment {
 
 
-    private CardView allSubjectsCard, filterCard, allTutorsCard, mapCard, addTerm, myTerms;
-    private LinearLayout addTermLayout;
+    private CardView allSubjectsCard, filterCard, allTutorsCard, mapCard, addTerm, myTerms, seeMyTermsStudent;
+    private LinearLayout addTermLayout, studentViewLayout;
 
 
     @Override
@@ -45,6 +46,8 @@ public class Dashboard extends Fragment {
         addTerm = view.findViewById(R.id.addTerm);
         addTermLayout = view.findViewById(R.id.addTermLayout);
         myTerms = view.findViewById(R.id.seeMyTerms);
+        studentViewLayout = view.findViewById(R.id.studentView);
+        seeMyTermsStudent = view.findViewById(R.id.seeMyTermsStudent);
 
         SharedPreferences mPrefs = getActivity().getSharedPreferences("User_info", Context.MODE_PRIVATE);
         String json = mPrefs.getString("Profile_info", null);
@@ -52,7 +55,7 @@ public class Dashboard extends Fragment {
         final UserInfo userInfo = gson.fromJson(json, UserInfo.class);
 
         if (userInfo.getRole().equals("tutor")) addTermLayout.setVisibility(View.VISIBLE);
-
+        else studentViewLayout.setVisibility(View.VISIBLE);
         for (int i = 0; i < getFragmentManager().getBackStackEntryCount(); i++) {
             getFragmentManager().popBackStack();
         }
@@ -107,6 +110,16 @@ public class Dashboard extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "To be implemented", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        seeMyTermsStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.flcontent, new MyTermsStudent())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
         return view;
