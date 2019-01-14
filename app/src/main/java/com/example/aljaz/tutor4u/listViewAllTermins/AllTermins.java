@@ -147,12 +147,10 @@ public class AllTermins extends Fragment {
                             modelAllTermins.add(newModelAllTermins);
                         }
 
-                            if (modelAllTermins.isEmpty()) {
-                                Toast.makeText(getContext(), "There are currently no termins for this subject", Toast.LENGTH_LONG).show();
-                                getFragmentManager().beginTransaction()
-                                        .replace(R.id.flcontent, new AllSubjects())
-                                        .commit();
-                            }
+
+                    }
+                    if (modelAllTermins.isEmpty()) {
+                        Toast.makeText(getContext(), "There are currently no termins for this subject", Toast.LENGTH_LONG).show();
                     }
                     callback.onSuccess(modelAllTermins);
                 } catch (JSONException e) {

@@ -1,19 +1,19 @@
 
-Dsquid:S1659"(Declare "filterCard" on a separate line.(Ô«œĞ8’åŒ»„-
 Gsquid:S1659"+Declare "allTutorsCard" on a separate line.(Ô«œĞ8’åŒ»„-
-Asquid:S1659"%Declare "mapCard" on a separate line.(Ô«œĞ8’åŒ»„-
-Asquid:S1659"%Declare "addTerm" on a separate line.(Ô«œĞ8’åŒ»„-
-Asquid:S1659"%Declare "myTerms" on a separate line.(Ô«œĞ8’åŒ»„-
-Ksquid:S1659"/Declare "seeMyTermsStudent" on a separate line.(Ô«œĞ8’åŒ»„-
-Jsquid:S1659"/Declare "studentViewLayout" on a separate line.(·±¶C8’åŒ»„-
-zsquid:S1450"^Remove the "allSubjectsCard" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
-usquid:S1450"YRemove the "filterCard" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
-xsquid:S1450"\Remove the "allTutorsCard" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
-rsquid:S1450"VRemove the "mapCard" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
-rsquid:S1450"VRemove the "addTerm" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
-rsquid:S1450"VRemove the "myTerms" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
-|squid:S1450"`Remove the "seeMyTermsStudent" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
-wsquid:S1450"\Remove the "addTermLayout" field and declare it as a local variable in the relevant methods.(·±¶C8’åŒ»„-
-{squid:S1450"`Remove the "studentViewLayout" field and declare it as a local variable in the relevant methods.(·±¶C8’åŒ»„-
 Dsquid:S1185"(Remove this method to simply inherit it.(ßìê¯8’åŒ»„-
+Asquid:S1659"%Declare "mapCard" on a separate line.(Ô«œĞ8’åŒ»„-
+zsquid:S1450"^Remove the "allSubjectsCard" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
+Dsquid:S1659"(Declare "filterCard" on a separate line.(Ô«œĞ8’åŒ»„-
+rsquid:S1450"VRemove the "mapCard" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
+|squid:S1450"`Remove the "seeMyTermsStudent" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
+{squid:S1450"`Remove the "studentViewLayout" field and declare it as a local variable in the relevant methods.(·±¶C8’åŒ»„-
+xsquid:S1450"\Remove the "allTutorsCard" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
 …squid:UselessImportCheck"\Remove this unused import 'com.example.aljaz.tutor4u.listViewTutorTerms.ListViewTutorTerms'.(Ğ­É«8’åŒ»„-
+Ksquid:S1659"/Declare "seeMyTermsStudent" on a separate line.(Ô«œĞ8’åŒ»„-
+rsquid:S1450"VRemove the "myTerms" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
+Asquid:S1659"%Declare "myTerms" on a separate line.(Ô«œĞ8’åŒ»„-
+wsquid:S1450"\Remove the "addTermLayout" field and declare it as a local variable in the relevant methods.(·±¶C8’åŒ»„-
+Jsquid:S1659"/Declare "studentViewLayout" on a separate line.(·±¶C8’åŒ»„-
+usquid:S1450"YRemove the "filterCard" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
+rsquid:S1450"VRemove the "addTerm" field and declare it as a local variable in the relevant methods.(Ô«œĞ8’åŒ»„-
+Asquid:S1659"%Declare "addTerm" on a separate line.(Ô«œĞ8’åŒ»„-

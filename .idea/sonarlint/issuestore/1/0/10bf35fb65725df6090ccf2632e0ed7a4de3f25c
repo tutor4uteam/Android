@@ -1,19 +1,19 @@
 
 S"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(øãþ•ÿÿÿÿÿ
-esquid:S1301"KReplace this "switch" statement by "if" statements to increase readability.(øãþ•ÿÿÿÿÿ
-Osquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ
 gsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(Î‘¦³
-<squid:S1185"(Remove this method to simply inherit it.(¥Ë©
-_squid:S2147"ECombine this catch with the one at line 235, which has the same body.(âÃƒŠýÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Î‘¦³
-usquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(›Òµ£ýÿÿÿÿ
-Ssquid:UselessImportCheck",Remove this unused import 'android.net.Uri'.(òêû‘ýÿÿÿÿ
 ksquid:UselessImportCheck"DRemove this unused import 'android.graphics.drawable.ColorDrawable'.(ÖŸÂ«øÿÿÿÿ
-~squid:UselessImportCheck"\Remove this unused import 'com.example.aljaz.tutor4u.listViewStudentTerms.ModelStudentTerm'.(ßÂ›ì
-Zsquid:UselessImportCheck"3Remove this unused import 'android.graphics.Color'.(øãíòþÿÿÿÿ
 Žsquid:UselessImportCheck"gRemove this unused import 'com.example.aljaz.tutor4u.listViewStudentTerms.ListViewStudentTermsAdapter'.(ŠÆÜÙùÿÿÿÿ
-Vsquid:UselessImportCheck"4Remove this unused import 'android.widget.ListView'.(Œ‰Ö×
 =squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
+<squid:S1185"(Remove this method to simply inherit it.(¥Ë©
+usquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(›Òµ£ýÿÿÿÿ
+~squid:UselessImportCheck"\Remove this unused import 'com.example.aljaz.tutor4u.listViewStudentTerms.ModelStudentTerm'.(ßÂ›ì
 Vsquid:S3457"AFormat specifiers should be used instead of string concatenation.(Û‹¡ò
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
+Ssquid:UselessImportCheck",Remove this unused import 'android.net.Uri'.(òêû‘ýÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
+Osquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ
+Zsquid:UselessImportCheck"3Remove this unused import 'android.graphics.Color'.(øãíòþÿÿÿÿ
+esquid:S1301"KReplace this "switch" statement by "if" statements to increase readability.(øãþ•ÿÿÿÿÿ
+gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Î‘¦³
+_squid:S2147"ECombine this catch with the one at line 235, which has the same body.(âÃƒŠýÿÿÿÿ
+Vsquid:UselessImportCheck"4Remove this unused import 'android.widget.ListView'.(Œ‰Ö×

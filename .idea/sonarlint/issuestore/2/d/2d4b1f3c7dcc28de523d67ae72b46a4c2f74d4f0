@@ -1,12 +1,12 @@
 
-isquid:UselessImportCheck"GRemove this unused import 'com.example.aljaz.tutor4u.AddSubjectDialog'.(≤è⁄≥
-_squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÖÚ÷|
-psquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(æ¬òŸ
-=squid:S1148"#Use a logger to log this exception.(Ä…‘Ö˝ˇˇˇˇ
 ãsquid:S1319"qThe type of the "result" object should be an interface such as "List" rather than the implementation "ArrayList".(∂ºﬂ¡˘ˇˇˇˇ
 R
 squid:S106"9Replace this use of System.out or System.err by a logger.(â€û¬¸ˇˇˇˇ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(à¡ìÊ
-?squid:S3457"%String contains no format specifiers.(ïôœÎ˝ˇˇˇˇ
+isquid:UselessImportCheck"GRemove this unused import 'com.example.aljaz.tutor4u.AddSubjectDialog'.(≤è⁄≥
 usquid:UselessImportCheck"NRemove this unused import 'com.google.android.gms.tasks.TaskCompletionSource'.(∞ˆã’˛ˇˇˇˇ
+_squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÖÚ÷|
 `squid:S1192"KDefine a constant instead of duplicating this literal "freeTermin" 3 times.(∂›∏
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(à¡ìÊ
+=squid:S1148"#Use a logger to log this exception.(Ä…‘Ö˝ˇˇˇˇ
+psquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(æ¬òŸ
+?squid:S3457"%String contains no format specifiers.(ïôœÎ˝ˇˇˇˇ
